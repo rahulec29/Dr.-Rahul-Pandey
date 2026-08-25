@@ -1,0 +1,1078 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cryptography and Network Security — Online Test</title>
+<style>
+  /* ===================== CONFIG-DRIVEN LOOK: GATE / NTA CBT STYLE ===================== */
+  :root{
+    --header-navy:#0a2540;
+    --header-navy2:#123a63;
+    --accent-blue:#1a73c7;
+    --panel-bg:#eef1f4;
+    --not-visited:#8a8a8a;
+    --not-answered:#e2574c;
+    --answered:#3fa34d;
+    --marked:#8e44ad;
+    --marked-answered:#8e44ad;
+    --border:#c9d0d6;
+    --text:#1c1c1c;
+    --warn:#b02a1e;
+  }
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;height:100%;font-family:Arial,Helvetica,sans-serif;color:var(--text);background:#d7dde2;}
+  button{font-family:inherit;cursor:pointer;}
+  ::-webkit-scrollbar{width:10px;height:10px;}
+  ::-webkit-scrollbar-thumb{background:#b7bec4;border-radius:6px;}
+
+  /* ---------- Screen switcher ---------- */
+  .screen{display:none;}
+  .screen.active{display:block;}
+
+  /* ---------- LOGIN / INSTRUCTIONS SCREEN ---------- */
+  #loginScreen{min-height:100vh;align-items:center;justify-content:center;padding:24px;background:linear-gradient(160deg,#0a2540,#123a63 55%,#1a73c7);}
+  #loginScreen.active{display:flex;}
+  .login-card{background:#fff;max-width:760px;width:100%;border-radius:6px;box-shadow:0 12px 40px rgba(0,0,0,.35);overflow:hidden;}
+  .login-head{background:var(--header-navy);color:#fff;padding:18px 28px;}
+  .login-head h1{margin:0;font-size:19px;letter-spacing:.3px;}
+  .login-head p{margin:4px 0 0;font-size:12.5px;color:#bcd3ea;}
+  .login-body{padding:24px 28px;}
+  .login-body h3{margin:0 0 8px;font-size:14.5px;color:var(--header-navy);border-bottom:2px solid var(--accent-blue);padding-bottom:6px;}
+  .field-row{display:flex;gap:14px;margin-bottom:12px;flex-wrap:wrap;}
+  .field{flex:1 1 220px;}
+  .field label{display:block;font-size:12.5px;font-weight:bold;margin-bottom:4px;color:#333;}
+  .field input{width:100%;padding:9px 10px;border:1px solid #b9c0c6;border-radius:4px;font-size:13.5px;}
+  .field input:focus{outline:2px solid var(--accent-blue);}
+  .instructions{background:#f7f9fb;border:1px solid #e0e5e9;border-radius:5px;padding:14px 16px;font-size:12.8px;line-height:1.65;max-height:230px;overflow-y:auto;margin:14px 0;}
+  .instructions li{margin-bottom:5px;}
+  .instructions b{color:var(--header-navy);}
+  .legend-row{display:flex;flex-wrap:wrap;gap:10px;margin:14px 0;font-size:11.8px;}
+  .legend-item{display:flex;align-items:center;gap:6px;background:#f7f9fb;border:1px solid #e0e5e9;border-radius:20px;padding:5px 10px;}
+  .legend-dot{width:16px;height:16px;border-radius:3px;display:inline-block;flex-shrink:0;}
+  .agree-row{display:flex;align-items:flex-start;gap:8px;font-size:12.5px;margin:14px 0 18px;}
+  .agree-row input{margin-top:3px;}
+  #startBtn{background:var(--accent-blue);color:#fff;border:none;padding:12px 26px;font-size:14.5px;border-radius:4px;font-weight:bold;letter-spacing:.3px;transition:background .15s;}
+  #startBtn:disabled{background:#a9b6c1;cursor:not-allowed;}
+  #startBtn:not(:disabled):hover{background:#155a9c;}
+  .error-msg{color:var(--warn);font-size:12px;margin-top:8px;display:none;}
+
+  /* ---------- WEBCAM / IDENTITY VERIFICATION ---------- */
+  .cam-box{background:#f7f9fb;border:1px solid #e0e5e9;border-radius:5px;padding:16px;margin:14px 0;}
+  .cam-stage{display:flex;gap:16px;flex-wrap:wrap;align-items:center;}
+  .cam-video-wrap{width:220px;height:165px;background:#111;border-radius:6px;overflow:hidden;position:relative;flex-shrink:0;}
+  .cam-video-wrap video, .cam-video-wrap img, .cam-video-wrap canvas{width:100%;height:100%;object-fit:cover;}
+  .cam-status{font-size:12.5px;line-height:1.6;flex:1 1 260px;}
+  .cam-status.ok{color:#256b34;}
+  .cam-status.fail{color:var(--warn);}
+  .cam-btns{display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;}
+  .cam-btns button{border:none;padding:8px 14px;border-radius:4px;font-size:12.5px;font-weight:bold;color:#fff;}
+  .btn-cam-start{background:var(--accent-blue);}
+  .btn-cam-capture{background:var(--answered);}
+  .btn-cam-retake{background:#6c7a86;}
+  .cam-hint{font-size:11.5px;color:#777;margin-top:6px;}
+
+  /* ---------- SECURITY LOCKDOWN (applies while exam is active) ---------- */
+  #examScreen.locked, #examScreen.locked *{
+    -webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;
+  }
+  .security-banner{background:#fff3cd;color:#7a5b00;border-bottom:1px solid #f2d98a;padding:6px 16px;font-size:11.5px;text-align:center;}
+  .violation-overlay{position:fixed;inset:0;background:rgba(120,10,10,.97);z-index:200;display:none;align-items:center;justify-content:center;flex-direction:column;color:#fff;text-align:center;padding:24px;}
+  .violation-overlay.show{display:flex;}
+  .violation-overlay h2{font-size:26px;margin:0 0 10px;}
+  .violation-overlay p{font-size:14.5px;max-width:520px;line-height:1.6;margin:4px 0;}
+  .violation-overlay .countdown{font-size:56px;font-weight:bold;margin:14px 0;font-variant-numeric:tabular-nums;}
+  .violation-overlay button{margin-top:16px;background:#fff;color:#780a0a;border:none;padding:12px 26px;border-radius:4px;font-weight:bold;font-size:14px;}
+  .cam-denied-box{background:#fdeceb;border:1px solid #f3c2bd;color:#8a241a;border-radius:5px;padding:12px 16px;font-size:12.5px;margin-top:10px;display:none;}
+
+  /* ---------- EXAM SCREEN ---------- */
+  #examScreen{height:100vh;flex-direction:column;}
+  #examScreen.active{display:flex;}
+  .topbar{background:var(--header-navy);color:#fff;display:flex;align-items:center;justify-content:space-between;padding:8px 16px;flex-wrap:wrap;gap:6px;}
+  .topbar .title{font-size:14.5px;font-weight:bold;}
+  .topbar .sub{font-size:11px;color:#a8c4de;}
+  .cand-timer{display:flex;align-items:center;gap:18px;font-size:13px;}
+  .violations-badge{background:#7a1010;color:#ffdada;padding:4px 10px;border-radius:12px;font-size:11px;font-weight:bold;display:none;}
+  .violations-badge.show{display:inline-block;}
+  .timer-box{background:#fff;color:var(--header-navy);padding:5px 12px;border-radius:4px;font-weight:bold;font-variant-numeric:tabular-nums;font-size:14px;}
+  .timer-box.low{background:#ffdada;color:var(--warn);animation:pulse 1s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.55;}}
+
+  .sectionbar{background:#dde6ee;border-bottom:1px solid var(--border);padding:6px 16px;font-size:12.5px;color:#123;display:flex;gap:6px;flex-wrap:wrap;}
+  .sectionbar .stag{padding:4px 12px;border-radius:14px;background:#c4d5e5;font-weight:bold;}
+  .sectionbar .stag.on{background:var(--accent-blue);color:#fff;}
+
+  .exam-body{flex:1;display:flex;overflow:hidden;}
+  .qpanel{flex:1;display:flex;flex-direction:column;background:#fff;overflow:hidden;}
+  .qhead{display:flex;justify-content:space-between;align-items:center;padding:12px 20px;border-bottom:1px solid var(--border);background:#f7f9fb;}
+  .qhead .qno{font-weight:bold;font-size:15px;color:var(--header-navy);}
+  .qhead .marks{font-size:12px;color:#333;}
+  .qhead .marks span{font-weight:bold;color:var(--answered);}
+  .qbody{flex:1;overflow-y:auto;padding:22px 26px;}
+  .qtext{font-size:15.5px;line-height:1.6;margin-bottom:20px;white-space:pre-line;}
+  .opt{display:flex;align-items:flex-start;gap:10px;padding:11px 14px;border:1px solid #dfe4e8;border-radius:5px;margin-bottom:10px;cursor:pointer;font-size:14px;line-height:1.5;transition:background .12s,border-color .12s;}
+  .opt:hover{background:#f2f7fc;border-color:var(--accent-blue);}
+  .opt.selected{background:#e7f1fb;border-color:var(--accent-blue);}
+  .opt input{margin-top:3px;flex-shrink:0;}
+  .opt .optlabel{font-weight:bold;color:var(--header-navy);margin-right:2px;}
+
+  .qfooter{border-top:1px solid var(--border);padding:12px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;background:#f7f9fb;}
+  .btnrow{display:flex;gap:8px;flex-wrap:wrap;}
+  .btn{border:none;padding:9px 16px;font-size:12.8px;border-radius:4px;font-weight:bold;color:#fff;}
+  .btn-mark{background:var(--marked);}
+  .btn-clear{background:#6c7a86;}
+  .btn-save{background:var(--answered);}
+  .btn-prev{background:#556a80;}
+  .btn-submit{background:var(--warn);}
+  .btn:hover{filter:brightness(1.08);}
+  .btn:disabled{opacity:.45;cursor:not-allowed;}
+
+  /* ---------- PALETTE SIDEBAR ---------- */
+  .sidebar{width:280px;background:var(--panel-bg);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow:hidden;}
+  .cand-box{padding:14px 16px;border-bottom:1px solid var(--border);background:#fff;}
+  .cand-box .name{font-weight:bold;font-size:13.5px;color:var(--header-navy);}
+  .cand-box .roll{font-size:11.5px;color:#555;}
+  .legend-mini{display:grid;grid-template-columns:1fr 1fr;gap:6px;padding:12px 16px;font-size:10.6px;border-bottom:1px solid var(--border);background:#fff;}
+  .legend-mini .li{display:flex;align-items:center;gap:6px;}
+  .legend-mini .dot{width:14px;height:14px;border-radius:3px;flex-shrink:0;display:inline-block;text-align:center;color:#fff;font-size:8px;line-height:14px;}
+  .palette-scroll{flex:1;overflow-y:auto;padding:10px 14px;}
+  .pal-section-title{font-size:11px;font-weight:bold;color:var(--header-navy);margin:10px 0 6px;text-transform:uppercase;letter-spacing:.4px;}
+  .pal-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px;}
+  .pal-btn{width:36px;height:32px;border:1px solid rgba(0,0,0,.15);border-radius:4px;font-size:12px;font-weight:bold;color:#fff;background:var(--not-visited);position:relative;}
+  .pal-btn.not-answered{background:var(--not-answered);}
+  .pal-btn.answered{background:var(--answered);}
+  .pal-btn.marked{background:var(--marked);}
+  .pal-btn.marked-answered{background:var(--marked-answered);}
+  .pal-btn.marked-answered::after{content:'✓';position:absolute;top:-5px;right:-5px;background:var(--answered);border-radius:50%;width:13px;height:13px;font-size:9px;line-height:13px;}
+  .pal-btn.current{outline:3px solid #ffb400;outline-offset:1px;}
+  .sidebar-submit{padding:12px 16px;border-top:1px solid var(--border);background:#fff;}
+  .sidebar-submit button{width:100%;padding:11px;background:var(--warn);color:#fff;border:none;border-radius:4px;font-weight:bold;font-size:13px;}
+
+  /* ---------- MODAL ---------- */
+  .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);display:none;align-items:center;justify-content:center;z-index:50;padding:16px;}
+  .modal-overlay.show{display:flex;}
+  .modal{background:#fff;border-radius:6px;max-width:480px;width:100%;padding:22px 26px;box-shadow:0 16px 48px rgba(0,0,0,.4);}
+  .modal h3{margin:0 0 12px;color:var(--header-navy);font-size:16px;}
+  .modal table{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:16px;}
+  .modal td{padding:6px 4px;border-bottom:1px solid #eee;}
+  .modal td:last-child{text-align:right;font-weight:bold;}
+  .modal-btns{display:flex;justify-content:flex-end;gap:10px;}
+  .modal-btns button{padding:9px 18px;border:none;border-radius:4px;font-weight:bold;font-size:13px;}
+  .btn-cancel{background:#e2e6e9;color:#333;}
+  .btn-confirm{background:var(--warn);color:#fff;}
+
+  /* ---------- RESULT SCREEN ---------- */
+  #resultScreen{min-height:100vh;background:#eef1f4;padding:28px 16px;}
+  .result-wrap{max-width:960px;margin:0 auto;}
+  .result-head{background:var(--header-navy);color:#fff;padding:22px 28px;border-radius:6px 6px 0 0;}
+  .result-head h2{margin:0 0 4px;font-size:20px;}
+  .result-body{background:#fff;padding:26px 28px;border-radius:0 0 6px 6px;box-shadow:0 4px 18px rgba(0,0,0,.08);}
+  .score-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:22px;}
+  .score-card{background:#f7f9fb;border:1px solid #e3e8ec;border-radius:6px;padding:16px;text-align:center;}
+  .score-card .num{font-size:26px;font-weight:bold;color:var(--header-navy);}
+  .score-card.good .num{color:var(--answered);}
+  .score-card.bad .num{color:var(--warn);}
+  .score-card .lbl{font-size:11.5px;color:#666;margin-top:4px;text-transform:uppercase;letter-spacing:.3px;}
+  .section-summary{width:100%;border-collapse:collapse;margin-bottom:24px;font-size:13px;}
+  .section-summary th,.section-summary td{border:1px solid #e3e8ec;padding:8px 12px;text-align:center;}
+  .section-summary th{background:var(--header-navy);color:#fff;}
+  .review-item{border:1px solid #e3e8ec;border-radius:6px;padding:14px 16px;margin-bottom:10px;}
+  .review-item.correct{border-left:5px solid var(--answered);}
+  .review-item.wrong{border-left:5px solid var(--warn);}
+  .review-item.skip{border-left:5px solid var(--not-visited);}
+  .review-item .rq{font-weight:bold;margin-bottom:6px;font-size:13.8px;}
+  .review-item .ra{font-size:12.8px;margin:2px 0;}
+  .tag-correct{color:var(--answered);font-weight:bold;}
+  .tag-wrong{color:var(--warn);font-weight:bold;}
+  .review-toggle{background:var(--accent-blue);color:#fff;border:none;padding:10px 18px;border-radius:4px;font-weight:bold;font-size:13px;margin:6px 6px 20px 0;}
+  .download-btn{background:#556a80;color:#fff;border:none;padding:10px 18px;border-radius:4px;font-weight:bold;font-size:13px;margin:6px 0 20px;}
+  #reviewList{display:none;}
+  .status-banner{padding:10px 14px;border-radius:5px;font-size:12.8px;margin-bottom:18px;}
+  .status-banner.ok{background:#e6f6ea;color:#256b34;border:1px solid #b9e3c3;}
+  .status-banner.fail{background:#fdeceb;color:#8a241a;border:1px solid #f3c2bd;}
+
+  @media (max-width:900px){
+    .exam-body{flex-direction:column;}
+    .sidebar{width:100%;order:2;max-height:40vh;}
+    .qpanel{order:1;}
+  }
+</style>
+</head>
+<body>
+
+<!-- =========================================================
+     SCREEN 1 — CANDIDATE LOGIN + INSTRUCTIONS
+========================================================= -->
+<div id="loginScreen" class="screen active">
+  <div class="login-card">
+    <div class="login-head">
+      <h1>Cryptography and Network Security — Online Assessment</h1>
+      <p>Based on Lecture 1–3 (Introduction to Network Security) &amp; Classical Cryptography (Unit 1) · Total Marks: <b id="totalMarksTag">100</b></p>
+    </div>
+    <div class="login-body">
+      <h3>Candidate Details</h3>
+      <div class="field-row">
+        <div class="field">
+          <label for="candName">Full Name *</label>
+          <input type="text" id="candName" placeholder="e.g. Priya Sharma" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="candRoll">Roll No. / Student ID *</label>
+          <input type="text" id="candRoll" placeholder="e.g. CS21B045" autocomplete="off">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label for="candEmail">Email (optional)</label>
+          <input type="email" id="candEmail" placeholder="e.g. priya@college.edu" autocomplete="off">
+        </div>
+        <div class="field">
+          <label for="candClass">Class / Section (optional)</label>
+          <input type="text" id="candClass" placeholder="e.g. CSE-3A" autocomplete="off">
+        </div>
+      </div>
+
+      <h3>General Instructions</h3>
+      <div class="instructions" id="instructionsBox">
+        <ol>
+          <li>The test consists of <b>10 objective-type (MCQ) questions</b> across two sections — <b>Section A: Theoretical</b> (5 × 10 marks = 50, from Lecture 1–3) and <b>Section B: Numerical</b> (5 × 10 marks = 50, from Classical Cryptography) — for a total of <b>100 marks</b>.</li>
+          <li>Total duration: <b id="durTag">60 minutes</b>. The test will <b>auto-submit</b> when the timer reaches zero.</li>
+          <li>There is <b>no negative marking</b> in this test unless your instructor has stated otherwise.</li>
+          <li>Each question has exactly <b>one correct option</b>. Click an option to select it as your answer.</li>
+          <li>Use <b>Save &amp; Next</b> to save your answer and move to the next question.</li>
+          <li>Use <b>Mark for Review &amp; Next</b> if you want to revisit a question later — it will still count if you also answered it.</li>
+          <li>Use <b>Clear Response</b> to deselect your chosen option for the current question.</li>
+          <li>You may navigate to <b>any question at any time</b> using the question palette on the right.</li>
+          <li>Click <b>Submit Test</b> at any time to end the test early, or let it auto-submit at time-up.</li>
+          <li>Do not refresh or close this browser tab — your progress is saved automatically in this browser, but a stable internet connection is required at the time of final submission.</li>
+          <li><b>Security monitoring:</b> this test requires <b>fullscreen mode</b>. Switching tabs, minimizing the window, switching to another application, or exiting fullscreen will be detected. You will have a short countdown (<b id="graceTag">5 seconds</b>) to return — if you don't, <b>your test will be automatically submitted</b> at that moment.</li>
+          <li><b>Copy, cut, paste, right-click, printing, and browser developer tools are disabled</b> during the test.</li>
+          <li><b>A live photo of you is captured before the test starts</b>, and periodic snapshots may be captured during the test, for identity verification by your instructor.</li>
+          <li style="color:#8a5300;"><b>Please note (in fairness to you):</b> this is browser-based monitoring, not a full lockdown system. It reliably detects tab/window switching on this device and disables in-page copying. It <b>cannot</b> prevent someone from photographing your screen with a separate phone/camera, nor guarantee against every possible screen-recording tool — your instructor may combine this with in-person invigilation.</li>
+        </ol>
+      </div>
+
+      <h3>Question Palette Color Legend</h3>
+      <div class="legend-row">
+        <div class="legend-item"><span class="legend-dot" style="background:var(--not-visited)"></span> Not Visited</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--not-answered)"></span> Not Answered</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--answered)"></span> Answered</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--marked)"></span> Marked for Review</div>
+        <div class="legend-item"><span class="legend-dot" style="background:var(--marked-answered)"></span> Answered &amp; Marked for Review</div>
+      </div>
+
+      <h3>Identity Verification (Live Photo)</h3>
+      <div class="cam-box" id="camBox">
+        <div class="cam-stage">
+          <div class="cam-video-wrap">
+            <video id="camVideo" autoplay playsinline muted></video>
+            <img id="camPhotoPreview" style="display:none;">
+          </div>
+          <div class="cam-status" id="camStatus">
+            Click <b>"Enable Camera"</b> below, allow camera access when your browser asks, then click <b>"Capture Photo"</b>.
+            This photo is attached to your submission for identity verification by your instructor — the same way a physical exam center checks your admit card photo.
+            <div class="cam-btns">
+              <button class="btn-cam-start" id="btnCamStart">Enable Camera</button>
+              <button class="btn-cam-capture" id="btnCamCapture" style="display:none;">Capture Photo</button>
+              <button class="btn-cam-retake" id="btnCamRetake" style="display:none;">Retake</button>
+            </div>
+            <div class="cam-hint">Your instructor has configured this test to require a live photo before starting. If you don't have a working camera, contact your instructor.</div>
+          </div>
+        </div>
+        <div class="cam-denied-box" id="camDeniedBox"></div>
+      </div>
+
+      <div class="agree-row">
+        <input type="checkbox" id="agreeBox">
+        <label for="agreeBox">I have read and understood the instructions above. I agree to attempt this test honestly, without external assistance or unfair means, and I consent to the live photo and in-test monitoring described above being used solely for academic integrity verification by my instructor.</label>
+      </div>
+
+      <button id="startBtn" disabled>Start Test</button>
+      <div class="error-msg" id="loginError">Please fill in your Name and Roll No., capture your identity photo, and accept the declaration above.</div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     SCREEN 2 — EXAM (GATE / CBT STYLE)
+========================================================= -->
+<div id="examScreen" class="screen">
+  <div class="topbar">
+    <div>
+      <div class="title">Cryptography and Network Security — Online Assessment</div>
+      <div class="sub">Lecture 1–3 &amp; Classical Cryptography · Total Marks: 100</div>
+    </div>
+    <div class="cand-timer">
+      <div id="topCandName">—</div>
+      <div class="violations-badge" id="violationsBadge">0 violations</div>
+      <div>Time Left: <span class="timer-box" id="timerBox">60:00</span></div>
+    </div>
+  </div>
+  <div class="security-banner">🔒 This is a secure, monitored test session. Switching tabs, minimizing the window, exiting fullscreen, or using copy/paste will be logged — and may end your test automatically.</div>
+  <div class="sectionbar" id="sectionBar"></div>
+
+  <div class="exam-body">
+    <div class="qpanel">
+      <div class="qhead">
+        <div class="qno" id="qNoLabel">Question 1</div>
+        <div class="marks">Marks: <span id="qMarksLabel">+1</span> &nbsp;|&nbsp; Negative: <span id="qNegLabel">0</span></div>
+      </div>
+      <div class="qbody">
+        <div class="qtext" id="qText">Loading question...</div>
+        <div id="qOptions"></div>
+      </div>
+      <div class="qfooter">
+        <div class="btnrow">
+          <button class="btn btn-mark" id="btnMark">Mark for Review &amp; Next</button>
+          <button class="btn btn-clear" id="btnClear">Clear Response</button>
+        </div>
+        <div class="btnrow">
+          <button class="btn btn-prev" id="btnPrev">&larr; Previous</button>
+          <button class="btn btn-save" id="btnSave">Save &amp; Next &rarr;</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="sidebar">
+      <div class="cand-box">
+        <div style="display:flex;gap:10px;align-items:center;">
+          <img id="sidePhoto" src="" style="width:52px;height:52px;border-radius:5px;object-fit:cover;background:#ddd;display:none;">
+          <div>
+            <div class="name" id="sideCandName">—</div>
+            <div class="roll" id="sideCandRoll">—</div>
+          </div>
+        </div>
+      </div>
+      <div class="legend-mini">
+        <div class="li"><span class="dot" style="background:var(--not-visited)"></span>Not Visited</div>
+        <div class="li"><span class="dot" style="background:var(--not-answered)"></span>Not Answered</div>
+        <div class="li"><span class="dot" style="background:var(--answered)">✓</span>Answered</div>
+        <div class="li"><span class="dot" style="background:var(--marked)"></span>Marked</div>
+      </div>
+      <div class="palette-scroll" id="paletteScroll"></div>
+      <div class="sidebar-submit">
+        <button id="btnSubmitTest">Submit Test</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     SECURITY VIOLATION OVERLAY
+========================================================= -->
+<div class="violation-overlay" id="violationOverlay">
+  <h2>⚠ Security Violation Detected</h2>
+  <p id="violationReasonText">You switched away from the test window.</p>
+  <p>Return to the test in fullscreen mode immediately, or it will be <b>automatically submitted</b>.</p>
+  <div class="countdown" id="violationCountdown">5</div>
+  <button id="btnReturnToTest">I'm Back — Resume Test</button>
+</div>
+
+<!-- =========================================================
+     MODAL — CONFIRM SUBMISSION
+========================================================= -->
+<div class="modal-overlay" id="submitModal">
+  <div class="modal">
+    <h3>Confirm Submission</h3>
+    <table id="submitSummaryTable"></table>
+    <p style="font-size:12.5px;color:#555;margin-top:-6px;">Once submitted, you cannot change your answers. Are you sure you want to submit the test?</p>
+    <div class="modal-btns">
+      <button class="btn-cancel" id="btnCancelSubmit">Cancel</button>
+      <button class="btn-confirm" id="btnConfirmSubmit">Yes, Submit Test</button>
+    </div>
+  </div>
+</div>
+
+<!-- =========================================================
+     SCREEN 3 — RESULT
+========================================================= -->
+<div id="resultScreen" class="screen">
+  <div class="result-wrap">
+    <div class="result-head">
+      <h2>Test Completed</h2>
+      <div id="resultCandLine">—</div>
+    </div>
+    <div class="result-body">
+      <div id="submitStatusBanner"></div>
+      <div class="score-grid">
+        <div class="score-card good"><div class="num" id="resObtained">0</div><div class="lbl">Marks Obtained</div></div>
+        <div class="score-card"><div class="num" id="resTotal">100</div><div class="lbl">Total Marks</div></div>
+        <div class="score-card"><div class="num" id="resPercent">0%</div><div class="lbl">Percentage</div></div>
+        <div class="score-card good"><div class="num" id="resCorrect">0</div><div class="lbl">Correct</div></div>
+        <div class="score-card bad"><div class="num" id="resWrong">0</div><div class="lbl">Incorrect</div></div>
+        <div class="score-card"><div class="num" id="resSkipped">0</div><div class="lbl">Unattempted</div></div>
+      </div>
+
+      <table class="section-summary" id="sectionSummaryTable">
+        <thead><tr><th>Section</th><th>Questions</th><th>Attempted</th><th>Correct</th><th>Marks Obtained</th><th>Max Marks</th></tr></thead>
+        <tbody></tbody>
+      </table>
+
+      <button class="review-toggle" id="btnToggleReview">Show Detailed Answer Review</button>
+      <button class="download-btn" id="btnDownloadBackup">Download My Response (backup file)</button>
+
+      <div id="reviewList"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =====================================================================
+   CONFIGURATION — edit these values for your own classroom deployment
+===================================================================== */
+const CONFIG = {
+  // Paste your deployed Google Apps Script Web App URL here (see hosting guide).
+  // Leave as-is to run the quiz WITHOUT centralized response collection.
+  SCRIPT_URL: "https://script.google.com/macros/s/AKfycbwLcIseYzTSoUn5xNs53t_6BcL4dulN4U9zOgxj_V8mAXqBAgA80G0xCqUy8cm17hwE/exec",
+
+  DURATION_MINUTES: 45,          // total test duration
+  NEGATIVE_MARKING: false,       // set true to enable GATE-style negative marking
+  NEG_FRACTION: {10:1/3}, // penalty per wrong answer, keyed by question mark value (only used if NEGATIVE_MARKING = true)
+  SHOW_ANSWER_REVIEW: false,      // show correct/incorrect review after submission (set false for strict exam mode) — OFF so students cannot see answers after submitting
+  AUTOSAVE_KEY: "ehQuizAutosave_v1",
+
+  // ---------------- SECURITY / LOCKDOWN SETTINGS ----------------
+  ENABLE_SECURITY_LOCKDOWN: true,   // master switch for tab/fullscreen monitoring + copy-paste blocking
+  GRACE_SECONDS: 5,                 // seconds a student has to return before auto-submit (set 0 for instant auto-submit)
+  REQUIRE_WEBCAM: true,             // require a live identity photo before the test can start
+  ENABLE_PERIODIC_SNAPSHOTS: true,  // silently capture webcam snapshots during the test
+  SNAPSHOT_INTERVAL_MINUTES: 5,     // how often periodic snapshots are taken
+  SNAPSHOT_ON_VIOLATION: true       // capture an extra webcam snapshot at the moment of any violation
+};
+document.getElementById('graceTag').textContent = CONFIG.GRACE_SECONDS + " second" + (CONFIG.GRACE_SECONDS===1?"":"s");
+if(!CONFIG.REQUIRE_WEBCAM){ document.getElementById('camBox').style.display='none'; }
+
+/* =====================================================================
+   QUESTION BANK — 10 Questions | 100 Marks | Lecture 1-3 + Classical Cryptography
+   Section A = Theoretical, Lecture 1-3 (10 marks each) | Section B = Numerical, Classical Cryptography (10 marks each)
+===================================================================== */
+const QUESTIONS = [
+// ---------------- SECTION A: THEORETICAL (Lecture 1-3) — 10 marks each ----------------
+{s:"A",m:10,q:"According to the NIST Computer Security Handbook, computer security refers to the protection given to an automated information system in order to preserve which three fundamental objectives?",o:["Speed, cost, and usability","Confidentiality, Integrity, and Availability","Authentication, Authorization, and Accounting","Hardware, software, and firmware"],a:1},
+{s:"A",m:10,q:"Which of the following best defines 'Integrity' as a security objective (per the CIA triad)?",o:["Ensuring timely and reliable access to information","Guarding against improper modification or destruction of information, including non-repudiation","Preventing unauthorized disclosure of information","Verifying the identity of a communicating entity"],a:1},
+{s:"A",m:10,q:"A passive attack such as traffic analysis is considered particularly dangerous mainly because:",o:["It always destroys the data being transmitted","It is difficult to detect since it does not involve any alteration of the data","It requires physical access to the server room","It is easily blocked by antivirus software"],a:1},
+{s:"A",m:10,q:"The ITU-T X.800 recommendation, 'Security Architecture for OSI,' is significant because it:",o:["Defines a systematic way of characterizing security requirements and approaches to satisfying them","Specifies the physical wiring standard for LAN cables","Is a programming language used for writing cryptographic code","Replaces the need for encryption algorithms entirely"],a:0},
+{s:"A",m:10,q:"In the general model for network security, what is required by the two communicating principals, possibly with the help of a trusted third party, to achieve secure transmission over an insecure channel?",o:["Identical operating systems on both ends","Some secret information, such as a key, used along with the security transformation","A dedicated physical cable directly connecting them","Removal of all security mechanisms to speed up transfer"],a:1},
+
+// ---------------- SECTION B: NUMERICAL (Classical Cryptography) — 10 marks each ----------------
+{s:"B",m:10,q:"Using the Caesar cipher formula C = E(k,p) = (p + k) mod 26 (A=0, B=1, ... Z=25), what is the ciphertext letter for plaintext letter 'H' with key k = 3?",o:["J","K","L","I"],a:1},
+{s:"B",m:10,q:"In the Vigenère cipher, encryption is given by Ci = (pi + ki) mod 26. If a plaintext letter is 'L' (p = 11) and the corresponding key letter is 'K' (k = 10), what is the resulting ciphertext letter?",o:["U","V","W","T"],a:1},
+{s:"B",m:10,q:"As discussed in class, a rotor machine with 5 rotors, each wired to define a monoalphabetic substitution, is stated to be equivalent in key space to a Vigenère cipher with a key length of approximately:",o:["26","676","11,881,376","308,915,776"],a:2},
+{s:"B",m:10,q:"A Playfair cipher uses the keyword 'MONARCHY' (I/J combined) to build this 5×5 key matrix:\nM O N A R\nC H Y B D\nE F G I K\nL P Q S T\nU V W X Z\nApplying the 'same row' rule (each letter replaced by the letter to its right, wrapping around), what is the ciphertext for the plaintext digraph 'AR'?",o:["RM","MR","AR","RA"],a:0},
+{s:"B",m:10,q:"A Hill cipher uses encryption C = PK mod 26, where P is a plaintext row vector and K is the 2×2 key matrix\nK = [ 3  3 ]\n    [ 2  5 ]\nFor plaintext digraph 'HI' (H = 7, I = 8, with A = 0), what is the resulting ciphertext digraph?",o:["LJ","JL","TC","CT"],a:0},
+];
+
+/* Assign global ids and section label metadata */
+const SECTION_META = {
+  A:{name:"Section A — Theoretical (Lecture 1-3)",   color:"#3fa34d"},
+  B:{name:"Section B — Numerical (Classical Cryptography)", color:"#1a73c7"}
+};
+QUESTIONS.forEach((q,i)=>{ q.id=i; });
+const TOTAL_MARKS = QUESTIONS.reduce((sum,q)=>sum+q.m,0);
+
+/* =====================================================================
+   STATE
+===================================================================== */
+let state = {
+  candidate:{name:"",roll:"",email:"",cls:""},
+  current:0,
+  answers:{},        // id -> selected option index
+  visited:{},         // id -> true
+  marked:{},           // id -> true
+  startTime:null,
+  endTime:null,
+  timeLeftSec:CONFIG.DURATION_MINUTES*60,
+  timerHandle:null,
+  submitted:false,
+  // security state
+  identityPhoto:null,      // base64 dataURL captured at login
+  cameraStream:null,
+  violations:[],           // {type, time}
+  graceHandle:null,
+  graceSecondsLeft:CONFIG.GRACE_SECONDS,
+  snapshotHandle:null,
+  autoSubmitReason:null
+};
+
+/* =====================================================================
+   INIT — populate config-driven text
+===================================================================== */
+document.getElementById('totalMarksTag').textContent = TOTAL_MARKS;
+document.getElementById('durTag').textContent = CONFIG.DURATION_MINUTES + " minutes";
+
+/* =====================================================================
+   WEBCAM IDENTITY CAPTURE (login screen)
+===================================================================== */
+const camVideo=document.getElementById('camVideo'), camPreview=document.getElementById('camPhotoPreview');
+const btnCamStart=document.getElementById('btnCamStart'), btnCamCapture=document.getElementById('btnCamCapture'), btnCamRetake=document.getElementById('btnCamRetake');
+const camStatus=document.getElementById('camStatus'), camDeniedBox=document.getElementById('camDeniedBox');
+
+btnCamStart.addEventListener('click', async ()=>{
+  try{
+    const stream = await navigator.mediaDevices.getUserMedia({video:{width:320,height:240},audio:false});
+    state.cameraStream = stream;
+    camVideo.srcObject = stream;
+    camVideo.style.display='block';
+    camPreview.style.display='none';
+    btnCamStart.style.display='none';
+    btnCamCapture.style.display='inline-block';
+    camDeniedBox.style.display='none';
+  }catch(err){
+    camDeniedBox.style.display='block';
+    camDeniedBox.textContent = "⚠ Camera access was blocked or no camera was found. Please allow camera access in your browser's site settings and click 'Enable Camera' again. (Error: "+err.name+")";
+  }
+});
+
+btnCamCapture.addEventListener('click', ()=>{
+  const canvas=document.createElement('canvas');
+  canvas.width=320; canvas.height=240;
+  canvas.getContext('2d').drawImage(camVideo,0,0,320,240);
+  state.identityPhoto = canvas.toDataURL('image/jpeg',0.8);
+  camPreview.src = state.identityPhoto;
+  camPreview.style.display='block';
+  camVideo.style.display='none';
+  if(state.cameraStream){ state.cameraStream.getTracks().forEach(t=>t.stop()); }
+  btnCamCapture.style.display='none';
+  btnCamRetake.style.display='inline-block';
+  camStatus.classList.add('ok');
+  validateLogin();
+});
+
+btnCamRetake.addEventListener('click', ()=>{
+  state.identityPhoto = null;
+  camStatus.classList.remove('ok');
+  btnCamRetake.style.display='none';
+  btnCamStart.style.display='inline-block';
+  btnCamStart.click();
+  validateLogin();
+});
+
+/* =====================================================================
+   LOGIN SCREEN LOGIC
+===================================================================== */
+const nameEl=document.getElementById('candName'), rollEl=document.getElementById('candRoll');
+const agreeEl=document.getElementById('agreeBox'), startBtn=document.getElementById('startBtn');
+function validateLogin(){
+  const photoOk = !CONFIG.REQUIRE_WEBCAM || !!state.identityPhoto;
+  const ok = nameEl.value.trim().length>1 && rollEl.value.trim().length>1 && agreeEl.checked && photoOk;
+  startBtn.disabled = !ok;
+}
+[nameEl,rollEl,agreeEl].forEach(el=>el.addEventListener('input',validateLogin));
+agreeEl.addEventListener('change',validateLogin);
+
+startBtn.addEventListener('click',()=>{
+  if(startBtn.disabled){
+    document.getElementById('loginError').style.display='block';
+    return;
+  }
+  state.candidate.name=nameEl.value.trim();
+  state.candidate.roll=rollEl.value.trim();
+  state.candidate.email=document.getElementById('candEmail').value.trim();
+  state.candidate.cls=document.getElementById('candClass').value.trim();
+  state.startTime=new Date();
+
+  document.getElementById('loginScreen').classList.remove('active');
+  document.getElementById('examScreen').classList.add('active');
+  document.getElementById('topCandName').textContent = state.candidate.name + " (" + state.candidate.roll + ")";
+  document.getElementById('sideCandName').textContent = state.candidate.name;
+  document.getElementById('sideCandRoll').textContent = state.candidate.roll + (state.candidate.cls? " · "+state.candidate.cls:"");
+  if(state.identityPhoto){
+    const img=document.getElementById('sidePhoto');
+    img.src=state.identityPhoto; img.style.display='block';
+  }
+
+  buildSectionBar();
+  buildPalette();
+  renderQuestion(0);
+  startTimer();
+
+  if(CONFIG.ENABLE_SECURITY_LOCKDOWN){
+    document.getElementById('examScreen').classList.add('locked');
+    enterFullscreenBestEffort();
+    setupSecurityListeners();
+    if(CONFIG.ENABLE_PERIODIC_SNAPSHOTS && CONFIG.REQUIRE_WEBCAM && state.identityPhoto){
+      startPeriodicSnapshots();
+    }
+  }
+});
+
+function enterFullscreenBestEffort(){
+  try{
+    const el=document.documentElement;
+    if(el.requestFullscreen){ el.requestFullscreen().catch(()=>{}); }
+    else if(el.webkitRequestFullscreen){ el.webkitRequestFullscreen(); }
+  }catch(e){ /* fullscreen is best-effort — some browsers/devices don't support it */ }
+}
+
+/* =====================================================================
+   SECTION BAR
+===================================================================== */
+function buildSectionBar(){
+  const bar=document.getElementById('sectionBar');
+  bar.innerHTML="";
+  ["A","B"].forEach(s=>{
+    const span=document.createElement('span');
+    span.className="stag";
+    span.id="stag-"+s;
+    span.textContent = SECTION_META[s].name;
+    bar.appendChild(span);
+  });
+}
+function updateSectionBarHighlight(sec){
+  ["A","B"].forEach(s=>{
+    document.getElementById('stag-'+s).classList.toggle('on', s===sec);
+  });
+}
+
+/* =====================================================================
+   PALETTE
+===================================================================== */
+function buildPalette(){
+  const container=document.getElementById('paletteScroll');
+  container.innerHTML="";
+  ["A","B"].forEach(sec=>{
+    const title=document.createElement('div');
+    title.className="pal-section-title";
+    title.textContent=SECTION_META[sec].name;
+    container.appendChild(title);
+    const grid=document.createElement('div');
+    grid.className="pal-grid";
+    QUESTIONS.filter(q=>q.s===sec).forEach(q=>{
+      const btn=document.createElement('button');
+      btn.className="pal-btn";
+      btn.id="pal-"+q.id;
+      btn.textContent = q.id+1;
+      btn.addEventListener('click',()=>renderQuestion(q.id));
+      grid.appendChild(btn);
+    });
+    container.appendChild(grid);
+  });
+  refreshPalette();
+}
+function paletteClassFor(id){
+  const answered = state.answers[id]!==undefined;
+  const mark = !!state.marked[id];
+  const visited = !!state.visited[id];
+  if(mark && answered) return 'marked-answered';
+  if(mark) return 'marked';
+  if(answered) return 'answered';
+  if(visited) return 'not-answered';
+  return '';
+}
+function refreshPalette(){
+  QUESTIONS.forEach(q=>{
+    const btn=document.getElementById('pal-'+q.id);
+    if(!btn) return;
+    btn.className="pal-btn "+paletteClassFor(q.id);
+    if(q.id===state.current) btn.classList.add('current');
+  });
+}
+
+/* =====================================================================
+   RENDER QUESTION
+===================================================================== */
+function renderQuestion(id){
+  state.current=id;
+  state.visited[id]=true;
+  const q=QUESTIONS[id];
+  updateSectionBarHighlight(q.s);
+
+  document.getElementById('qNoLabel').textContent = "Question "+(id+1)+" of "+QUESTIONS.length;
+  document.getElementById('qMarksLabel').textContent = "+"+q.m;
+  document.getElementById('qNegLabel').textContent = CONFIG.NEGATIVE_MARKING ? ("-"+(CONFIG.NEG_FRACTION[q.m]||0).toFixed(2)) : "0";
+  document.getElementById('qText').textContent = (id+1)+". "+q.q;
+
+  const optWrap=document.getElementById('qOptions');
+  optWrap.innerHTML="";
+  const letters=['A','B','C','D'];
+  q.o.forEach((optText,idx)=>{
+    const div=document.createElement('div');
+    div.className="opt"+(state.answers[id]===idx?" selected":"");
+    div.innerHTML = '<input type="radio" name="opt" '+(state.answers[id]===idx?'checked':'')+'><span class="optlabel">('+letters[idx]+')</span> <span>'+optText+'</span>';
+    div.addEventListener('click',()=>{
+      state.answers[id]=idx;
+      renderQuestion(id); // re-render to show selection
+      refreshPalette();
+      autosave();
+    });
+    optWrap.appendChild(div);
+  });
+
+  document.getElementById('btnPrev').disabled = (id===0);
+  refreshPalette();
+  autosave();
+}
+
+/* =====================================================================
+   BUTTON HANDLERS
+===================================================================== */
+document.getElementById('btnSave').addEventListener('click',()=>{
+  goNext();
+});
+document.getElementById('btnPrev').addEventListener('click',()=>{
+  if(state.current>0) renderQuestion(state.current-1);
+});
+document.getElementById('btnClear').addEventListener('click',()=>{
+  delete state.answers[state.current];
+  renderQuestion(state.current);
+  refreshPalette();
+  autosave();
+});
+document.getElementById('btnMark').addEventListener('click',()=>{
+  state.marked[state.current]=true;
+  goNext();
+});
+function goNext(){
+  refreshPalette();
+  if(state.current < QUESTIONS.length-1){
+    renderQuestion(state.current+1);
+  } else {
+    refreshPalette();
+  }
+}
+
+/* =====================================================================
+   AUTOSAVE (localStorage) — survives accidental refresh
+===================================================================== */
+function autosave(){
+  try{
+    localStorage.setItem(CONFIG.AUTOSAVE_KEY, JSON.stringify({
+      candidate:state.candidate, answers:state.answers, marked:state.marked,
+      visited:state.visited, current:state.current, timeLeftSec:state.timeLeftSec
+    }));
+  }catch(e){}
+}
+
+/* =====================================================================
+   SECURITY MONITORING
+   Detects: tab switch / window minimize (visibilitychange + blur),
+            exiting fullscreen, and blocks copy/cut/paste/right-click/devtools.
+   HONEST LIMITATION: no webpage can detect or block someone using a
+   SEPARATE physical device (e.g. another phone) to photograph the screen,
+   nor guarantee against every OS-level screen recorder. This provides
+   strong, logged, browser-level deterrents — not an unbreakable lockdown.
+===================================================================== */
+const violationOverlay=document.getElementById('violationOverlay');
+const violationCountdownEl=document.getElementById('violationCountdown');
+const violationReasonText=document.getElementById('violationReasonText');
+const violationsBadge=document.getElementById('violationsBadge');
+
+function setupSecurityListeners(){
+  document.addEventListener('visibilitychange', ()=>{
+    if(document.hidden && examIsActive()){ handleViolation('Tab switched or window minimized'); }
+  });
+  window.addEventListener('blur', ()=>{
+    if(examIsActive() && document.hidden===false && !violationOverlay.classList.contains('show')){
+      // small delay avoids double-firing alongside visibilitychange in most browsers
+      setTimeout(()=>{ if(examIsActive() && !document.hasFocus()){ handleViolation('Switched to another window/application'); } },150);
+    }
+  });
+  document.addEventListener('fullscreenchange', ()=>{
+    if(!document.fullscreenElement && examIsActive()){ handleViolation('Exited fullscreen mode'); }
+  });
+  document.addEventListener('contextmenu', (e)=>{ if(examIsActive()) e.preventDefault(); });
+  ['copy','cut','paste'].forEach(evt=>{
+    document.addEventListener(evt, (e)=>{ if(examIsActive()) e.preventDefault(); });
+  });
+  document.addEventListener('keydown', (e)=>{
+    if(!examIsActive()) return;
+    const k=e.key.toLowerCase();
+    const blockedCombo = (e.ctrlKey||e.metaKey) && ['c','x','v','u','s','p','a'].includes(k);
+    const blockedDevTools = e.key==='F12' || ((e.ctrlKey||e.metaKey)&&e.shiftKey&&['i','j','c'].includes(k));
+    if(blockedCombo || blockedDevTools){ e.preventDefault(); }
+  });
+}
+function examIsActive(){
+  return document.getElementById('examScreen').classList.contains('active') && !state.submitted;
+}
+
+function handleViolation(reason){
+  if(!examIsActive()) return;
+  if(violationOverlay.classList.contains('show')) return; // already handling one
+  const entry={type:reason, time:new Date().toISOString()};
+  state.violations.push(entry);
+  violationsBadge.textContent = state.violations.length + " violation" + (state.violations.length===1?"":"s");
+  violationsBadge.classList.add('show');
+  if(CONFIG.SNAPSHOT_ON_VIOLATION){ captureAndSendSnapshot('violation: '+reason); }
+  startGraceCountdown(reason);
+}
+
+function startGraceCountdown(reason){
+  violationReasonText.textContent = reason + ".";
+  state.graceSecondsLeft = CONFIG.GRACE_SECONDS;
+  violationCountdownEl.textContent = state.graceSecondsLeft;
+  violationOverlay.classList.add('show');
+  if(state.graceSecondsLeft<=0){ finalizeAutoSubmitFromViolation(reason); return; }
+  state.graceHandle = setInterval(()=>{
+    state.graceSecondsLeft--;
+    violationCountdownEl.textContent = state.graceSecondsLeft;
+    if(state.graceSecondsLeft<=0){
+      clearInterval(state.graceHandle);
+      finalizeAutoSubmitFromViolation(reason);
+    }
+  },1000);
+}
+
+function finalizeAutoSubmitFromViolation(reason){
+  violationOverlay.classList.remove('show');
+  state.autoSubmitReason = "Auto-submitted: "+reason;
+  doSubmit(true);
+}
+
+document.getElementById('btnReturnToTest').addEventListener('click', ()=>{
+  clearInterval(state.graceHandle);
+  violationOverlay.classList.remove('show');
+  enterFullscreenBestEffort();
+});
+
+/* ---------------- Webcam snapshot capture (periodic + on-violation) ---------------- */
+function startPeriodicSnapshots(){
+  const ms = CONFIG.SNAPSHOT_INTERVAL_MINUTES*60*1000;
+  state.snapshotHandle = setInterval(()=>{
+    if(examIsActive()){ captureAndSendSnapshot('periodic check'); }
+  }, ms);
+}
+async function captureAndSendSnapshot(reason){
+  try{
+    const stream = await navigator.mediaDevices.getUserMedia({video:{width:320,height:240},audio:false});
+    const track = stream.getVideoTracks()[0];
+    const video = document.createElement('video');
+    video.srcObject = stream; video.muted = true;
+    await video.play();
+    await new Promise(r=>setTimeout(r,300)); // let the camera settle/expose
+    const canvas=document.createElement('canvas'); canvas.width=320; canvas.height=240;
+    canvas.getContext('2d').drawImage(video,0,0,320,240);
+    const dataUrl = canvas.toDataURL('image/jpeg',0.7);
+    track.stop();
+    if(CONFIG.SCRIPT_URL && CONFIG.SCRIPT_URL.indexOf("PASTE_YOUR")!==0){
+      fetch(CONFIG.SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},
+        body:JSON.stringify({type:"snapshot", roll:state.candidate.roll, name:state.candidate.name, reason:reason, time:new Date().toISOString(), image:dataUrl})
+      }).catch(()=>{});
+    }
+  }catch(e){ /* camera may be busy or blocked mid-test — fail silently, don't interrupt the student */ }
+}
+
+/* =====================================================================
+   TIMER
+===================================================================== */
+function startTimer(){
+  updateTimerDisplay();
+  state.timerHandle=setInterval(()=>{
+    state.timeLeftSec--;
+    updateTimerDisplay();
+    autosave();
+    if(state.timeLeftSec<=0){
+      clearInterval(state.timerHandle);
+      doSubmit(true);
+    }
+  },1000);
+}
+function updateTimerDisplay(){
+  const m=Math.floor(state.timeLeftSec/60), s=state.timeLeftSec%60;
+  const box=document.getElementById('timerBox');
+  box.textContent = String(m).padStart(2,'0')+":"+String(s).padStart(2,'0');
+  box.classList.toggle('low', state.timeLeftSec<=120);
+}
+
+/* =====================================================================
+   SUBMIT FLOW
+===================================================================== */
+document.getElementById('btnSubmitTest').addEventListener('click',openSubmitModal);
+document.getElementById('btnCancelSubmit').addEventListener('click',()=>{
+  document.getElementById('submitModal').classList.remove('show');
+});
+document.getElementById('btnConfirmSubmit').addEventListener('click',()=>{
+  document.getElementById('submitModal').classList.remove('show');
+  doSubmit(false);
+});
+
+function openSubmitModal(){
+  const total=QUESTIONS.length;
+  const answered=Object.keys(state.answers).length;
+  const markedCount=Object.keys(state.marked).length;
+  const notVisited = total - Object.keys(state.visited).length;
+  const notAnswered = total - answered;
+  const table=document.getElementById('submitSummaryTable');
+  table.innerHTML = `
+    <tr><td>Total Questions</td><td>${total}</td></tr>
+    <tr><td>Answered</td><td>${answered}</td></tr>
+    <tr><td>Not Answered</td><td>${notAnswered}</td></tr>
+    <tr><td>Marked for Review</td><td>${markedCount}</td></tr>
+    <tr><td>Not Visited</td><td>${notVisited}</td></tr>
+  `;
+  document.getElementById('submitModal').classList.add('show');
+}
+
+function scoreTest(){
+  let obtained=0, correct=0, wrong=0, skipped=0;
+  const bySection={A:{max:0,obt:0,correct:0,attempted:0,total:0},B:{max:0,obt:0,correct:0,attempted:0,total:0}};
+  const details=[];
+  QUESTIONS.forEach(q=>{
+    bySection[q.s].max += q.m;
+    bySection[q.s].total += 1;
+    const chosen = state.answers[q.id];
+    let status='skip', delta=0;
+    if(chosen===undefined){
+      skipped++;
+    } else {
+      bySection[q.s].attempted += 1;
+      if(chosen===q.a){
+        correct++; delta=q.m; status='correct';
+        bySection[q.s].correct += 1;
+      } else {
+        wrong++; status='wrong';
+        if(CONFIG.NEGATIVE_MARKING){ delta = -(CONFIG.NEG_FRACTION[q.m]||0); }
+      }
+    }
+    obtained += delta;
+    bySection[q.s].obt += delta;
+    details.push({id:q.id,q:q.q,options:q.o,correctIdx:q.a,chosenIdx:chosen,status,marks:q.m,delta,section:q.s});
+  });
+  obtained = Math.max(0, Math.round(obtained*100)/100);
+  return {obtained,correct,wrong,skipped,bySection,details};
+}
+
+function doSubmit(autoTimeUp){
+  if(state.submitted) return;
+  state.submitted=true;
+  clearInterval(state.timerHandle);
+  clearInterval(state.graceHandle);
+  clearInterval(state.snapshotHandle);
+  document.getElementById('examScreen').classList.remove('locked');
+  state.endTime=new Date();
+  if(document.fullscreenElement){ try{ document.exitFullscreen().catch(()=>{}); }catch(e){} }
+
+  const result = scoreTest();
+  const timeTakenSec = Math.round((state.endTime-state.startTime)/1000);
+
+  renderResultScreen(result, autoTimeUp, timeTakenSec);
+  sendToBackend(result, timeTakenSec);
+
+  try{ localStorage.removeItem(CONFIG.AUTOSAVE_KEY); }catch(e){}
+
+  document.getElementById('examScreen').classList.remove('active');
+  document.getElementById('resultScreen').classList.add('active');
+}
+
+/* =====================================================================
+   RESULT SCREEN RENDERING
+===================================================================== */
+function renderResultScreen(result, autoTimeUp, timeTakenSec){
+  let statusSuffix = "";
+  if(state.autoSubmitReason){ statusSuffix = "  —  ⚠ "+state.autoSubmitReason; }
+  else if(autoTimeUp){ statusSuffix = "  —  Auto-submitted (time up)"; }
+  document.getElementById('resultCandLine').textContent =
+    state.candidate.name+" ("+state.candidate.roll+")"+(state.candidate.cls?" · "+state.candidate.cls:"")+statusSuffix;
+
+  document.getElementById('resObtained').textContent = result.obtained;
+  document.getElementById('resTotal').textContent = TOTAL_MARKS;
+  document.getElementById('resPercent').textContent = ((result.obtained/TOTAL_MARKS)*100).toFixed(1)+"%";
+  document.getElementById('resCorrect').textContent = result.correct;
+  document.getElementById('resWrong').textContent = result.wrong;
+  document.getElementById('resSkipped').textContent = result.skipped;
+
+  const tbody=document.querySelector('#sectionSummaryTable tbody');
+  tbody.innerHTML="";
+  ["A","B"].forEach(s=>{
+    const b=result.bySection[s];
+    const tr=document.createElement('tr');
+    tr.innerHTML = `<td style="text-align:left;font-weight:bold;">${SECTION_META[s].name}</td><td>${b.total}</td><td>${b.attempted}</td><td>${b.correct}</td><td>${Math.round(b.obt*100)/100}</td><td>${b.max}</td>`;
+    tbody.appendChild(tr);
+  });
+
+  // Detailed review
+  const reviewList=document.getElementById('reviewList');
+  if(CONFIG.SHOW_ANSWER_REVIEW){
+    reviewList.innerHTML="";
+    const letters=['A','B','C','D'];
+    result.details.forEach(d=>{
+      const div=document.createElement('div');
+      div.className="review-item "+d.status;
+      const chosenText = d.chosenIdx!==undefined ? letters[d.chosenIdx]+") "+d.options[d.chosenIdx] : "Not Attempted";
+      const correctText = letters[d.correctIdx]+") "+d.options[d.correctIdx];
+      div.innerHTML = `
+        <div class="rq">Q${d.id+1} [${SECTION_META[d.section].name.split('—')[1].trim()}, ${d.marks} mark${d.marks>1?'s':''}] — ${d.q}</div>
+        <div class="ra">Your answer: <span class="${d.status==='correct'?'tag-correct':(d.status==='wrong'?'tag-wrong':'')}">${chosenText}</span></div>
+        ${d.status!=='correct' ? `<div class="ra">Correct answer: <span class="tag-correct">${correctText}</span></div>` : ''}
+      `;
+      reviewList.appendChild(div);
+    });
+  } else {
+    document.getElementById('btnToggleReview').style.display='none';
+  }
+
+  document.getElementById('btnDownloadBackup').onclick=()=>downloadBackup(result,timeTakenSec);
+}
+document.getElementById('btnToggleReview').addEventListener('click',(e)=>{
+  const rl=document.getElementById('reviewList');
+  const show = rl.style.display!=='block';
+  rl.style.display = show?'block':'none';
+  e.target.textContent = show ? "Hide Detailed Answer Review" : "Show Detailed Answer Review";
+});
+
+/* =====================================================================
+   BACKEND SUBMISSION — Google Apps Script (free, see hosting guide)
+===================================================================== */
+function sendToBackend(result, timeTakenSec){
+  const banner=document.getElementById('submitStatusBanner');
+  if(!CONFIG.SCRIPT_URL || CONFIG.SCRIPT_URL.indexOf("PASTE_YOUR")===0){
+    banner.className="status-banner fail";
+    banner.textContent="⚠ No response-collection link configured (CONFIG.SCRIPT_URL is empty). Your result is shown below, but it was NOT sent to your instructor automatically. Use 'Download My Response' and share the file, or ask your instructor to configure the backend link (see hosting guide).";
+    return;
+  }
+  const payload={
+    type:"submission",
+    name:state.candidate.name, roll:state.candidate.roll, email:state.candidate.email, cls:state.candidate.cls,
+    totalMarks:TOTAL_MARKS, obtainedMarks:result.obtained, correctCount:result.correct, wrongCount:result.wrong,
+    unattempted:result.skipped, percentage:((result.obtained/TOTAL_MARKS)*100).toFixed(2),
+    timeTakenSec:timeTakenSec, submittedAt:new Date().toISOString(),
+    autoSubmitReason: state.autoSubmitReason || (timeTakenSec>=CONFIG.DURATION_MINUTES*60 ? "Time up" : ""),
+    violationCount: state.violations.length,
+    violations: state.violations,
+    identityPhoto: state.identityPhoto || "",
+    answers: result.details.map(d=>({q:d.id+1, chosen:d.chosenIdx, correct:d.correctIdx, status:d.status}))
+  };
+  fetch(CONFIG.SCRIPT_URL,{
+    method:"POST",
+    mode:"no-cors",
+    headers:{"Content-Type":"text/plain;charset=utf-8"},
+    body:JSON.stringify(payload)
+  }).then(()=>{
+    banner.className="status-banner ok";
+    banner.textContent="✅ Your response has been submitted successfully to your instructor's response sheet.";
+  }).catch(()=>{
+    banner.className="status-banner fail";
+    banner.textContent="⚠ Could not reach the response-collection server (check your internet connection). Please use 'Download My Response' below and send the file to your instructor as a backup.";
+  });
+}
+
+function downloadBackup(result,timeTakenSec){
+  // NOTE: deliberately omits correctIdx / per-question status so a downloaded backup
+  // cannot be used by the student to learn the correct answers. Only the instructor's
+  // response sheet (via sendToBackend) receives the full answer key.
+  const safeDetails = result.details.map(d=>({id:d.id, q:d.q, options:d.options, chosenIdx:d.chosenIdx, marks:d.marks, section:d.section}));
+  const payload={
+    candidate:state.candidate, totalMarks:TOTAL_MARKS, obtainedMarks:result.obtained,
+    correct:result.correct, wrong:result.wrong, unattempted:result.skipped,
+    percentage:((result.obtained/TOTAL_MARKS)*100).toFixed(2), timeTakenSec:timeTakenSec,
+    submittedAt:new Date().toISOString(), autoSubmitReason: state.autoSubmitReason || "",
+    violations: state.violations, identityPhotoIncluded: !!state.identityPhoto,
+    details:safeDetails
+  };
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url; a.download="response_"+state.candidate.roll+"_"+Date.now()+".json";
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+/* Warn before accidental tab close during an active test */
+window.addEventListener('beforeunload',(e)=>{
+  if(document.getElementById('examScreen').classList.contains('active') && !state.submitted){
+    e.preventDefault(); e.returnValue='';
+  }
+});
+</script>
+</body>
+</html>
