@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cryptography and Network Security — Online Test</title>
+<title>Quiz 1_B18 — Online Test</title>
 <style>
   /* ===================== CONFIG-DRIVEN LOOK: GATE / NTA CBT STYLE ===================== */
   :root{
@@ -114,6 +114,11 @@
   .opt:hover{background:#f2f7fc;border-color:var(--accent-blue);}
   .opt.selected{background:#e7f1fb;border-color:var(--accent-blue);}
   .opt input{margin-top:3px;flex-shrink:0;}
+  .text-answer-wrap{margin-top:10px;max-width:760px;}
+  .text-answer-label{display:block;font-size:13px;font-weight:bold;color:var(--header-navy);margin-bottom:7px;}
+  .text-answer-input{width:100%;padding:12px 14px;border:1px solid #b9c0c6;border-radius:5px;font-size:15px;text-transform:uppercase;letter-spacing:.6px;}
+  .text-answer-input:focus{outline:2px solid var(--accent-blue);border-color:var(--accent-blue);}
+  .text-answer-note{font-size:11.5px;color:#666;margin-top:6px;}
   .opt .optlabel{font-weight:bold;color:var(--header-navy);margin-right:2px;}
 
   .qfooter{border-top:1px solid var(--border);padding:12px 20px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;background:#f7f9fb;}
@@ -206,8 +211,8 @@
 <div id="loginScreen" class="screen active">
   <div class="login-card">
     <div class="login-head">
-      <h1>Cryptography and Network Security — Online Assessment</h1>
-      <p>Based on Classical Cryptography (Unit 1) · Total Marks: <b id="totalMarksTag">100</b></p>
+      <h1>Quiz 1_B18 — Online Assessment</h1>
+      <p>Cryptography & Network Security · Total Marks: <b id="totalMarksTag">20</b></p>
     </div>
     <div class="login-body">
       <h3>Candidate Details</h3>
@@ -227,23 +232,27 @@
           <input type="email" id="candEmail" placeholder="e.g. priya@college.edu" autocomplete="off">
         </div>
         <div class="field">
-          <label for="candClass">Class / Section (optional)</label>
-          <input type="text" id="candClass" placeholder="e.g. CSE-3A" autocomplete="off">
+          <label for="candClass">Section Code *</label>
+          <input type="text" id="candClass" placeholder="e.g. B18" autocomplete="off">
+          <div class="error-msg" id="sectionError" style="display:none;">Incorrect section code. Ask your instructor for the correct code for this test.</div>
         </div>
       </div>
 
       <h3>General Instructions</h3>
       <div class="instructions" id="instructionsBox">
         <ol>
-          <li>The test consists of <b>10 objective-type (MCQ) questions</b> across two sections — <b>Section A: Theoretical</b> (5 × 1 mark = 5, Unit 1) and <b>Section B: Numerical</b> (5 × 2 marks = 10, Unit 1: Classical Cryptography) — for a total of <b>15 marks</b>.</li>
+          <li>You must enter the correct <b>Section Code</b> given by your instructor to unlock the Start Test button.</li>
+          <li>The test consists of <b>12 questions</b> across three sections — <b>Section A: Basic</b> (7 × 1 mark = 7), <b>Section B: Intermediate</b> (2 × 2 marks = 4), and <b>Section C: Advanced</b> (3 × 3 marks = 9) — for a total of <b>20 marks</b>.</li>
           <li>Total duration: <b id="durTag">60 minutes</b>. The test will <b>auto-submit</b> when the timer reaches zero.</li>
-          <li>There is <b>no negative marking</b> in this test unless your instructor has stated otherwise.</li>
-          <li>Each question has exactly <b>one correct option</b>. Click an option to select it as your answer.</li>
+          <li>There is <b>25% negative marking</b> on wrong answers in Section A (Basic) and Section B (Intermediate). <b>Section C (Advanced)</b> has <b>no negative marking</b>.</li>
+          <li>Each multiple-choice question has exactly <b>one correct option</b>. Questions requiring a typed answer must be entered exactly as instructed.</li>
           <li>Use <b>Save &amp; Next</b> to save your answer and move to the next question.</li>
           <li>Use <b>Mark for Review &amp; Next</b> if you want to revisit a question later — it will still count if you also answered it.</li>
           <li>Use <b>Clear Response</b> to deselect your chosen option for the current question.</li>
           <li>You may navigate to <b>any question at any time</b> using the question palette on the right.</li>
           <li>Click <b>Submit Test</b> at any time to end the test early, or let it auto-submit at time-up.</li>
+          <li>The order of questions and the order of options within each MCQ are <b>randomized separately for every candidate</b> — your Question 1 may not be the same as someone else's Question 1.</li>
+          <li>Your score is shown immediately after you submit, but the <b>correct-answer review stays hidden until your test's time window is over</b> (i.e. it unlocks at the same moment an auto-submit would happen, even if you finish early) — this keeps the answers from spreading to candidates who are still testing.</li>
           <li>Do not refresh or close this browser tab — your progress is saved automatically in this browser, but a stable internet connection is required at the time of final submission.</li>
           <li><b>Security monitoring:</b> this test requires <b>fullscreen mode</b>. Switching tabs, minimizing the window, switching to another application, or exiting fullscreen will be detected. You will have a short countdown (<b id="graceTag">5 seconds</b>) to return — if you don't, <b>your test will be automatically submitted</b> at that moment.</li>
           <li><b>Copy, cut, paste, right-click, printing, and browser developer tools are disabled</b> during the test.</li>
@@ -288,7 +297,7 @@
       </div>
 
       <button id="startBtn" disabled>Start Test</button>
-      <div class="error-msg" id="loginError">Please fill in your Name and Roll No., capture your identity photo, and accept the declaration above.</div>
+      <div class="error-msg" id="loginError">Please fill in your Name, Roll No., and the correct Section Code, capture your identity photo, and accept the declaration above.</div>
     </div>
   </div>
 </div>
@@ -299,13 +308,13 @@
 <div id="examScreen" class="screen">
   <div class="topbar">
     <div>
-      <div class="title">Cryptography and Network Security — Online Assessment</div>
-      <div class="sub">Classical Cryptography · Total Marks: 15</div>
+      <div class="title">Quiz 1_B18 — Online Assessment</div>
+      <div class="sub">· Total Marks: 20</div>
     </div>
     <div class="cand-timer">
       <div id="topCandName">—</div>
       <div class="violations-badge" id="violationsBadge">0 violations</div>
-      <div>Time Left: <span class="timer-box" id="timerBox">30:00</span></div>
+      <div>Time Left: <span class="timer-box" id="timerBox">25:00</span></div>
     </div>
   </div>
   <div class="security-banner">🔒 This is a secure, monitored test session. Switching tabs, minimizing the window, exiting fullscreen, or using copy/paste will be logged — and may end your test automatically.</div>
@@ -396,7 +405,7 @@
       <div id="submitStatusBanner"></div>
       <div class="score-grid">
         <div class="score-card good"><div class="num" id="resObtained">0</div><div class="lbl">Marks Obtained</div></div>
-        <div class="score-card"><div class="num" id="resTotal">100</div><div class="lbl">Total Marks</div></div>
+        <div class="score-card"><div class="num" id="resTotal">20</div><div class="lbl">Total Marks</div></div>
         <div class="score-card"><div class="num" id="resPercent">0%</div><div class="lbl">Percentage</div></div>
         <div class="score-card good"><div class="num" id="resCorrect">0</div><div class="lbl">Correct</div></div>
         <div class="score-card bad"><div class="num" id="resWrong">0</div><div class="lbl">Incorrect</div></div>
@@ -408,6 +417,9 @@
         <tbody></tbody>
       </table>
 
+      <div id="reviewLockedMsg" style="display:none;background:#fff8e1;border:1px solid #f0dfa0;color:#7a5b00;border-radius:5px;padding:12px 16px;font-size:12.8px;margin-bottom:18px;">
+        🔒 The detailed answer review (with correct answers) stays hidden while the test is still open for other candidates. It will unlock automatically here in <b id="revealCountdown">--:--</b> — no need to refresh this page.
+      </div>
       <button class="review-toggle" id="btnToggleReview">Show Detailed Answer Review</button>
       <button class="download-btn" id="btnDownloadBackup">Download My Response (backup file)</button>
 
@@ -423,13 +435,17 @@
 const CONFIG = {
   // Paste your deployed Google Apps Script Web App URL here (see hosting guide).
   // Leave as-is to run the quiz WITHOUT centralized response collection.
-  SCRIPT_URL: "https://script.google.com/macros/s/AKfycbwBCSzWt2qC7nxduzgR_jE--FuZX0ATS-L92ZMQwqOw-gCLQ60fBbtX7YThcIfO1nl7/exec",
+  SCRIPT_URL: "https://script.google.com/macros/s/AKfycbw4xFvRCPst_4z16wa5E3NMc09wK3uMJQn4Rb6jTgNrwa5NGDtspIDTOCXFnjI3VxqJIQ/exec",
 
   DURATION_MINUTES: 30,          // total test duration
-  NEGATIVE_MARKING: false,       // set true to enable GATE-style negative marking
-  NEG_FRACTION: {1:1/3, 2:2/3}, // penalty per wrong answer, keyed by question mark value (only used if NEGATIVE_MARKING = true)
-  SHOW_ANSWER_REVIEW: false,      // show correct/incorrect review after submission (set false for strict exam mode) — OFF so students cannot see answers after submitting
+  NEGATIVE_MARKING: true,        // set true to enable GATE-style negative marking
+  // Penalty per wrong answer, keyed by question mark value (only used if NEGATIVE_MARKING = true).
+  // Section A = 1 mark, Section B = 2 marks, Section C = 3 marks, so keying by mark value
+  // keys it by section: 25% negative marking on Sections A & B, none on Section C.
+  NEG_FRACTION: {1:0.25, 2:0.5, 3:0},
+  SHOW_ANSWER_REVIEW: true,      // show correct/incorrect review after submission (set false for strict exam mode)
   AUTOSAVE_KEY: "ehQuizAutosave_v1",
+  SECTION_CODE: "B18",           // students must type this (case-insensitive) in the Section field to unlock Start Test
 
   // ---------------- SECURITY / LOCKDOWN SETTINGS ----------------
   ENABLE_SECURITY_LOCKDOWN: true,   // master switch for tab/fullscreen monitoring + copy-paste blocking
@@ -443,32 +459,92 @@ document.getElementById('graceTag').textContent = CONFIG.GRACE_SECONDS + " secon
 if(!CONFIG.REQUIRE_WEBCAM){ document.getElementById('camBox').style.display='none'; }
 
 /* =====================================================================
-   QUESTION BANK — 10 Questions | 15 Marks | Unit 1: Network Security Concepts + Classical Cryptography
-   Section A = Theoretical, Unit 1 (1 mark each) | Section B = Numerical, Classical Cryptography (2 marks each)
+   TIME HELPER — every timestamp recorded by this quiz (violations,
+   snapshots, submission time, backup file) uses Indian Standard Time
+   (UTC+5:30), regardless of the student's device/browser timezone.
+===================================================================== */
+function nowIST(){
+  const now = new Date();
+  const utcMs = now.getTime() + (now.getTimezoneOffset()*60000);
+  const ist = new Date(utcMs + 5.5*60*60*1000);
+  const pad = n => String(n).padStart(2,'0');
+  const datePart = ist.getFullYear()+"-"+pad(ist.getMonth()+1)+"-"+pad(ist.getDate());
+  const timePart = pad(ist.getHours())+":"+pad(ist.getMinutes())+":"+pad(ist.getSeconds());
+  return datePart+" "+timePart+" IST";
+}
+
+/* =====================================================================
+   QUESTION BANK — Quiz 1 | 12 Questions | 20 Marks | Cryptography & Information Security
+   Section A = Basic (1 mark) | Section B = Intermediate (2 marks) | Section C = Advanced (3 marks)
 ===================================================================== */
 const QUESTIONS = [
-// ---------------- SECTION A: THEORETICAL (Unit 1) — 1 mark each ----------------
-{s:"A",m:1,q:"Masquerade, replay, message modification, and denial of service are all sub-categories of which broad type of security attack?",o:["Passive attack","Active attack","Physical attack","Social engineering attack"],a:1},
-{s:"A",m:1,q:"Which X.800 security service specifically provides protection against a party later denying that they sent or received a particular message?",o:["Access Control","Data Confidentiality","Non-Repudiation","Availability"],a:2},
-{s:"A",m:1,q:"Security audit trails and security recovery are examples of which category of mechanism defined in X.800?",o:["Specific security mechanisms","Pervasive security mechanisms","Physical security mechanisms","Application-layer mechanisms"],a:1},
-{s:"A",m:1,q:"Why is the strategy for handling active attacks focused on detection and recovery rather than prevention?",o:["Active attacks are easy to prevent but hard to detect","Active attacks are hard to prevent due to a wide variety of potential vulnerabilities, but relatively easy to detect","Active attacks never cause real damage to a system","Passive attacks are impossible to detect, so active attacks are prioritized instead"],a:1},
-{s:"A",m:1,q:"Which of the following is NOT one of the four basic tasks required by the general model for designing a network security service?",o:["Design a suitable algorithm for the security transformation","Generate the secret information (keys) used by the algorithm","Develop methods to distribute and share the secret information","Purchase new networking hardware for every principal"],a:3},
-
-// ---------------- SECTION B: NUMERICAL (Classical Cryptography) — 2 marks each ----------------
-{s:"B",m:2,q:"Using the Caesar cipher formula C = E(k,p) = (p + k) mod 26 (A=0, B=1, ... Z=25), what is the ciphertext letter for plaintext letter 'M' (p = 12) with key k = 9?",o:["U","V","W","T"],a:1},
-{s:"B",m:2,q:"In the Vigenère cipher, encryption is given by Ci = (pi + ki) mod 26. Encrypt the full plaintext phrase 'How to crack Exam from back door' (ignore spaces, 26 letters total) using the keyword 'EASY' repeated cyclically to match the plaintext length (key stream: EASYEASYEASYEASYEASYEASYEA). What is the resulting ciphertext?",o:["LOORSCJYGKWVEMXPSMTYGKVMSR","DOEVKCZCYKMZWMNTKMJCYKLQKR","HGUXOUPECCCBAEDVOEZECCBSOJ","FGWXMUREACEBYEFVMEBEACDSMJ"],a:0},
-{s:"B",m:2,q:"REVERSE PLAYFAIR (Decryption): Using the Playfair cipher with keyword 'MONARCHY' (I/J combined), the 5×5 key matrix is:\nM O N A R\nC H Y B D\nE F G I K\nL P Q S T\nU V W X Z\nGiven the CIPHERTEXT 'ZITOLT' (three digraphs: ZI, TO, LT — apply the row rule where the pair lies in the same row, the column rule where it lies in the same column, and the rectangle rule otherwise, replacing letters with their decryption counterparts), what is the recovered plaintext?",o:["XKPRTS","XKPRPL","TBPRTS","XKQMLT"],a:0},
-{s:"B",m:2,q:"A Hill cipher uses encryption C = PK mod 26, where P is a plaintext row vector and K is the 2×2 key matrix\nK = [ 3  3 ]\n    [ 2  5 ]\nFor plaintext digraph 'CS' (C = 2, S = 18, with A = 0), what is the resulting ciphertext digraph?",o:["QS","SQ","QT","TQ"],a:0},
-{s:"B",m:2,q:"VERNAM CIPHER / ONE-TIME PAD (Two-Step Key Generation): In this scheme, the key is first generated by XOR-ing two given bit streams, and that key is then XOR-ed with the plaintext to produce the ciphertext.\nStep 1: Generate the key as Key = Stream1 ⊕ Stream2, where Stream1 = 11001 and Stream2 = 10101.\nStep 2: Encrypt the plaintext 10110 using Ci = pi ⊕ ki with the key generated above.\nWhat is the resulting ciphertext?",o:["11010","01110","10011","11100"],a:0},
+{s:"C",m:3,type:"text",q:"Using the Playfair cipher, Encrypt the plaintext hello. Use x as the bogus letter (if required)\n\nSecret Key matrix:\nL G D B A\nQ M H E C\nU R N I/J F\nX V S O K\nZ Y W T P\n\nWRITE THE CIPHERTEXT IN CAPITAL LETTERS WITHOUT SPACE BETWEEN LETTERS.",answer:"ECQZBX"},
+{s:"A",m:1,type:"mcq",q:"In symmetric key cryptography, the same key is used for:",o:["Encryption only","Decryption only","Both encryption and decryption","Neither encryption nor decryption"],a:2},
+{s:"A",m:1,type:"mcq",q:"A Distributed Denial-of-Service (DDoS) attack mainly affects which security goal?",o:["Authentication","Integrity","Availability","Confidentiality"],a:2},
+{s:"A",m:1,type:"mcq",q:"An attacker who pretends to be a legitimate user to gain access is performing:",o:["Replay attack","Masquerade attack","SQL injection","Phishing attack"],a:1},
+{s:"B",m:2,type:"mcq",q:"Encrypt the plaintext “HELLO” using a Caesar cipher with a shift key of 3. The ciphertext is:",o:["KHOOR","KHLOO","LHOOR","KHOPR"],a:0},
+{s:"A",m:1,type:"mcq",q:"Which of the following is an example of a PASSIVE attack?",o:["Traffic analysis by an eavesdropper","Denial-of-Service (DoS) attack","Masquerade attack","Modification of messages in transit"],a:0},
+{s:"B",m:2,type:"mcq",q:"A monoalphabetic substitution cipher uses the key below:\n\nPlaintext:  a b c d e f g h i j k l m n o p q r s t u v w x y z\nCiphertext: Q W E R T Y U I O P A S D F G H J K L Z X C V B N M\n\nEncrypt the word “CIA”. Ciphertext is:",o:["EOQ","EOQR","QOE","EQO"],a:0},
+{s:"A",m:1,type:"mcq",q:"Which security service ensures that the sender cannot later deny that he/she had sent a message?",o:["Integrity","Authentication","Confidentiality","Non-repudiation"],a:3},
+{s:"A",m:1,type:"mcq",q:"The Caesar cipher is an example of a:",o:["Transposition cipher","Substitution cipher","Block cipher","Stream cipher"],a:1},
+{s:"C",m:3,type:"text",q:"An example key for monoalphabetic substitution cipher is given below:-\n\nPlaintext:  a b c d e f g h i j k l m n o p q r s t u v w x y z\nCiphertext: N O A T R B E C F U X D Q G Y L K H V I J M P Z S W\n\nUse the key to encrypt the message:- this message is easy to encrypt but hard to find the key\n\nWRITE THE CIPHERTEXT IN CAPITAL LETTERS WITHOUT SPACE BETWEEN LETTERS.",answer:"ICFVQRVVNEFVRNVSIYRGAHSLIOJICNHTIYBFGTICRXRS"},
+{s:"C",m:3,type:"text",q:"Encrypt the message “How was the test dear” using the 6-character keyword “PASCAL” using Vigenere method of cryptography.\n\nWRITE THE CIPHERTEXT IN CAPITAL LETTERS WITHOUT SPACE BETWEEN LETTERS.",answer:"WOOYADIHWVEDIDWCR"},
+{s:"A",m:1,type:"mcq",q:"A replay attack (resending previously captured messages) is considered:",o:["Active attack threatening availability","Active attack threatening integrity","Passive attack threatening availability","Passive attack threatening confidentiality"],a:1}
 ];
 
 /* Assign global ids and section label metadata */
 const SECTION_META = {
-  A:{name:"Section A — Theoretical (Unit 1)",   color:"#3fa34d"},
-  B:{name:"Section B — Numerical (Classical Cryptography)", color:"#1a73c7"}
+  A:{name:"Section A — Basic",   color:"#3fa34d"},
+  B:{name:"Section B — Intermediate", color:"#1a73c7"},
+  C:{name:"Section C — Advanced", color:"#8e44ad"}
 };
 QUESTIONS.forEach((q,i)=>{ q.id=i; });
 const TOTAL_MARKS = QUESTIONS.reduce((sum,q)=>sum+q.m,0);
+
+/* =====================================================================
+   RANDOMIZATION — runs once per candidate (every fresh page load / new
+   attempt gets a fresh shuffle, since Math.random reseeds each time).
+
+   IMPORTANT: q.id (assigned above, e.g. Q1..Q12) is the PERMANENT
+   original identity of each question and is NEVER changed by shuffling.
+   It is what gets sent to the Google Sheet backend, so your response
+   sheet's columns/order stay exactly the same as before — only what
+   the student SEES on screen is reordered/relabeled.
+
+   - Question order is shuffled WITHIN each section (Section A, then B,
+     then C stay in that block order — only the questions inside each
+     block are shuffled), so the paper still flows Basic -> Intermediate
+     -> Advanced. Change to a fully global shuffle if you don't want
+     that grouping — see comment below.
+   - For MCQ questions, the 4 options are shuffled and q.a (the correct
+     index) is remapped to match, so scoring stays correct.
+===================================================================== */
+function shuffleArray(arr){
+  for(let i=arr.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+QUESTIONS.forEach(q=>{
+  if(q.type==='mcq'){
+    const originalOpts=q.o;
+    const order=shuffleArray(originalOpts.map((_,i)=>i)); // order[newIdx] = oldIdx
+    q.o=order.map(i=>originalOpts[i]);
+    q.a=order.indexOf(q.a);
+  }
+});
+const QBYID={}; QUESTIONS.forEach(q=>{ QBYID[q.id]=q; });
+
+// Per-section shuffle (keeps Section A -> B -> C block order intact).
+// To shuffle ALL 12 questions together regardless of section instead,
+// replace this whole block with:
+//   let DISPLAY_ORDER = shuffleArray(QUESTIONS.map(q=>q.id));
+let DISPLAY_ORDER = [];
+["A","B","C"].forEach(sec=>{
+  const idsInSec = QUESTIONS.filter(q=>q.s===sec).map(q=>q.id);
+  DISPLAY_ORDER.push(...shuffleArray(idsInSec));
+});
 
 /* =====================================================================
    STATE
@@ -481,6 +557,8 @@ let state = {
   marked:{},           // id -> true
   startTime:null,
   endTime:null,
+  revealAt:null,      // timestamp (ms) after which correct answers may be shown
+  revealHandle:null,
   timeLeftSec:CONFIG.DURATION_MINUTES*60,
   timerHandle:null,
   submitted:false,
@@ -551,18 +629,25 @@ btnCamRetake.addEventListener('click', ()=>{
    LOGIN SCREEN LOGIC
 ===================================================================== */
 const nameEl=document.getElementById('candName'), rollEl=document.getElementById('candRoll');
+const classEl=document.getElementById('candClass'), sectionErrorEl=document.getElementById('sectionError');
 const agreeEl=document.getElementById('agreeBox'), startBtn=document.getElementById('startBtn');
+function sectionCodeOk(){
+  return classEl.value.trim().toUpperCase() === CONFIG.SECTION_CODE.toUpperCase();
+}
 function validateLogin(){
   const photoOk = !CONFIG.REQUIRE_WEBCAM || !!state.identityPhoto;
-  const ok = nameEl.value.trim().length>1 && rollEl.value.trim().length>1 && agreeEl.checked && photoOk;
+  const codeOk = sectionCodeOk();
+  sectionErrorEl.style.display = (classEl.value.trim().length>0 && !codeOk) ? 'block' : 'none';
+  const ok = nameEl.value.trim().length>1 && rollEl.value.trim().length>1 && agreeEl.checked && photoOk && codeOk;
   startBtn.disabled = !ok;
 }
-[nameEl,rollEl,agreeEl].forEach(el=>el.addEventListener('input',validateLogin));
+[nameEl,rollEl,classEl,agreeEl].forEach(el=>el.addEventListener('input',validateLogin));
 agreeEl.addEventListener('change',validateLogin);
 
 startBtn.addEventListener('click',()=>{
   if(startBtn.disabled){
     document.getElementById('loginError').style.display='block';
+    if(!sectionCodeOk()){ sectionErrorEl.style.display='block'; }
     return;
   }
   state.candidate.name=nameEl.value.trim();
@@ -570,6 +655,10 @@ startBtn.addEventListener('click',()=>{
   state.candidate.email=document.getElementById('candEmail').value.trim();
   state.candidate.cls=document.getElementById('candClass').value.trim();
   state.startTime=new Date();
+  // Correct answers unlock only once this candidate's own test-duration
+  // window would naturally have ended — same instant an auto-submit-on-
+  // time-up would fire — even if they finish and submit early.
+  state.revealAt = state.startTime.getTime() + CONFIG.DURATION_MINUTES*60*1000;
 
   document.getElementById('loginScreen').classList.remove('active');
   document.getElementById('examScreen').classList.add('active');
@@ -610,7 +699,7 @@ function enterFullscreenBestEffort(){
 function buildSectionBar(){
   const bar=document.getElementById('sectionBar');
   bar.innerHTML="";
-  ["A","B"].forEach(s=>{
+  ["A","B","C"].forEach(s=>{
     const span=document.createElement('span');
     span.className="stag";
     span.id="stag-"+s;
@@ -619,7 +708,7 @@ function buildSectionBar(){
   });
 }
 function updateSectionBarHighlight(sec){
-  ["A","B"].forEach(s=>{
+  ["A","B","C"].forEach(s=>{
     document.getElementById('stag-'+s).classList.toggle('on', s===sec);
   });
 }
@@ -630,19 +719,22 @@ function updateSectionBarHighlight(sec){
 function buildPalette(){
   const container=document.getElementById('paletteScroll');
   container.innerHTML="";
-  ["A","B"].forEach(sec=>{
+  ["A","B","C"].forEach(sec=>{
+    const idsInSec = DISPLAY_ORDER.filter(id=>QBYID[id].s===sec);
+    if(idsInSec.length===0) return;
     const title=document.createElement('div');
     title.className="pal-section-title";
     title.textContent=SECTION_META[sec].name;
     container.appendChild(title);
     const grid=document.createElement('div');
     grid.className="pal-grid";
-    QUESTIONS.filter(q=>q.s===sec).forEach(q=>{
+    idsInSec.forEach(id=>{
+      const pos=DISPLAY_ORDER.indexOf(id);
       const btn=document.createElement('button');
       btn.className="pal-btn";
-      btn.id="pal-"+q.id;
-      btn.textContent = q.id+1;
-      btn.addEventListener('click',()=>renderQuestion(q.id));
+      btn.id="pal-"+id;
+      btn.textContent = pos+1; // label shown to the student = their own randomized position
+      btn.addEventListener('click',()=>renderQuestion(pos));
       grid.appendChild(btn);
     });
     container.appendChild(grid);
@@ -664,45 +756,69 @@ function refreshPalette(){
     const btn=document.getElementById('pal-'+q.id);
     if(!btn) return;
     btn.className="pal-btn "+paletteClassFor(q.id);
-    if(q.id===state.current) btn.classList.add('current');
+    if(q.id===DISPLAY_ORDER[state.current]) btn.classList.add('current');
   });
 }
 
 /* =====================================================================
    RENDER QUESTION
 ===================================================================== */
-function renderQuestion(id){
-  state.current=id;
-  state.visited[id]=true;
-  const q=QUESTIONS[id];
+function renderQuestion(pos){
+  // pos = the student's own randomized position (0-based) in DISPLAY_ORDER.
+  // qid = the permanent original question id — used for all state tracking
+  // (answers/visited/marked) and for backend scoring, so it's never affected
+  // by the shuffle.
+  state.current=pos;
+  const qid=DISPLAY_ORDER[pos];
+  const q=QBYID[qid];
+  state.visited[qid]=true;
   updateSectionBarHighlight(q.s);
 
-  document.getElementById('qNoLabel').textContent = "Question "+(id+1)+" of "+QUESTIONS.length;
+  document.getElementById('qNoLabel').textContent = "Question "+(pos+1)+" of "+QUESTIONS.length;
   document.getElementById('qMarksLabel').textContent = "+"+q.m;
   document.getElementById('qNegLabel').textContent = CONFIG.NEGATIVE_MARKING ? ("-"+(CONFIG.NEG_FRACTION[q.m]||0).toFixed(2)) : "0";
-  document.getElementById('qText').textContent = (id+1)+". "+q.q;
+  document.getElementById('qText').textContent = (pos+1)+". "+q.q;
 
   const optWrap=document.getElementById('qOptions');
   optWrap.innerHTML="";
-  const letters=['A','B','C','D'];
-  q.o.forEach((optText,idx)=>{
-    const div=document.createElement('div');
-    div.className="opt"+(state.answers[id]===idx?" selected":"");
-    div.innerHTML = '<input type="radio" name="opt" '+(state.answers[id]===idx?'checked':'')+'><span class="optlabel">('+letters[idx]+')</span> <span>'+optText+'</span>';
-    div.addEventListener('click',()=>{
-      state.answers[id]=idx;
-      renderQuestion(id); // re-render to show selection
+
+  if(q.type==="text"){
+    const wrap=document.createElement('div');
+    wrap.className="text-answer-wrap";
+    const label=document.createElement('label');
+    label.className="text-answer-label";
+    label.textContent="Answer:";
+    const input=document.createElement('input');
+    input.className="text-answer-input";
+    input.type="text";
+    input.autocomplete="off";
+    input.spellcheck=false;
+    input.value=state.answers[qid] || "";
+    input.addEventListener('input',()=>{
+      state.answers[qid]=input.value.trim().toUpperCase();
       refreshPalette();
       autosave();
     });
-    optWrap.appendChild(div);
-  });
+    const note=document.createElement('div');
+    note.className="text-answer-note";
+    note.textContent="Enter the answer exactly as instructed in the question.";
+    wrap.appendChild(label); wrap.appendChild(input); wrap.appendChild(note);
+    optWrap.appendChild(wrap);
+  } else {
+    const letters=['A','B','C','D'];
+    q.o.forEach((optText,idx)=>{
+      const div=document.createElement('div');
+      div.className="opt"+(state.answers[qid]===idx?" selected":"");
+      div.innerHTML='<input type="radio" name="opt" '+(state.answers[qid]===idx?'checked':'')+'><span class="optlabel">('+letters[idx]+')</span> <span>'+optText+'</span>';
+      div.addEventListener('click',()=>{ state.answers[qid]=idx; renderQuestion(pos); refreshPalette(); autosave(); });
+      optWrap.appendChild(div);
+    });
+  }
 
-  document.getElementById('btnPrev').disabled = (id===0);
+  document.getElementById('btnPrev').disabled=(pos===0);
   refreshPalette();
   autosave();
 }
-
 /* =====================================================================
    BUTTON HANDLERS
 ===================================================================== */
@@ -713,13 +829,13 @@ document.getElementById('btnPrev').addEventListener('click',()=>{
   if(state.current>0) renderQuestion(state.current-1);
 });
 document.getElementById('btnClear').addEventListener('click',()=>{
-  delete state.answers[state.current];
+  delete state.answers[DISPLAY_ORDER[state.current]];
   renderQuestion(state.current);
   refreshPalette();
   autosave();
 });
 document.getElementById('btnMark').addEventListener('click',()=>{
-  state.marked[state.current]=true;
+  state.marked[DISPLAY_ORDER[state.current]]=true;
   goNext();
 });
 function goNext(){
@@ -789,7 +905,7 @@ function examIsActive(){
 function handleViolation(reason){
   if(!examIsActive()) return;
   if(violationOverlay.classList.contains('show')) return; // already handling one
-  const entry={type:reason, time:new Date().toISOString()};
+  const entry={type:reason, time:nowIST()};
   state.violations.push(entry);
   violationsBadge.textContent = state.violations.length + " violation" + (state.violations.length===1?"":"s");
   violationsBadge.classList.add('show');
@@ -846,7 +962,7 @@ async function captureAndSendSnapshot(reason){
     track.stop();
     if(CONFIG.SCRIPT_URL && CONFIG.SCRIPT_URL.indexOf("PASTE_YOUR")!==0){
       fetch(CONFIG.SCRIPT_URL,{method:"POST",mode:"no-cors",headers:{"Content-Type":"text/plain;charset=utf-8"},
-        body:JSON.stringify({type:"snapshot", roll:state.candidate.roll, name:state.candidate.name, reason:reason, time:new Date().toISOString(), image:dataUrl})
+        body:JSON.stringify({type:"snapshot", roll:state.candidate.roll, name:state.candidate.name, reason:reason, time:nowIST(), image:dataUrl})
       }).catch(()=>{});
     }
   }catch(e){ /* camera may be busy or blocked mid-test — fail silently, don't interrupt the student */ }
@@ -905,33 +1021,32 @@ function openSubmitModal(){
 
 function scoreTest(){
   let obtained=0, correct=0, wrong=0, skipped=0;
-  const bySection={A:{max:0,obt:0,correct:0,attempted:0,total:0},B:{max:0,obt:0,correct:0,attempted:0,total:0}};
+  const bySection={A:{max:0,obt:0,correct:0,attempted:0,total:0},B:{max:0,obt:0,correct:0,attempted:0,total:0},C:{max:0,obt:0,correct:0,attempted:0,total:0}};
   const details=[];
   QUESTIONS.forEach(q=>{
-    bySection[q.s].max += q.m;
-    bySection[q.s].total += 1;
-    const chosen = state.answers[q.id];
-    let status='skip', delta=0;
-    if(chosen===undefined){
-      skipped++;
-    } else {
-      bySection[q.s].attempted += 1;
-      if(chosen===q.a){
-        correct++; delta=q.m; status='correct';
-        bySection[q.s].correct += 1;
-      } else {
-        wrong++; status='wrong';
-        if(CONFIG.NEGATIVE_MARKING){ delta = -(CONFIG.NEG_FRACTION[q.m]||0); }
+    bySection[q.s].max+=q.m; bySection[q.s].total+=1;
+    const chosen=state.answers[q.id]; let status='skip',delta=0,chosenDisplay='Not Attempted',correctDisplay='';
+    if(q.type==='text'){
+      correctDisplay=q.answer;
+      if(chosen===undefined || String(chosen).trim()===''){ skipped++; }
+      else { bySection[q.s].attempted++; chosenDisplay=String(chosen).trim().toUpperCase();
+        if(chosenDisplay===q.answer){correct++;delta=q.m;status='correct';bySection[q.s].correct++;}
+        else {wrong++;status='wrong';if(CONFIG.NEGATIVE_MARKING)delta=-(CONFIG.NEG_FRACTION[q.m]||0);}
+      }
+    }else{
+      const letters=['A','B','C','D']; correctDisplay=letters[q.a]+') '+q.o[q.a];
+      if(chosen===undefined){skipped++;}
+      else {bySection[q.s].attempted++;chosenDisplay=letters[chosen]+') '+q.o[chosen];
+        if(chosen===q.a){correct++;delta=q.m;status='correct';bySection[q.s].correct++;}
+        else {wrong++;status='wrong';if(CONFIG.NEGATIVE_MARKING)delta=-(CONFIG.NEG_FRACTION[q.m]||0);}
       }
     }
-    obtained += delta;
-    bySection[q.s].obt += delta;
-    details.push({id:q.id,q:q.q,options:q.o,correctIdx:q.a,chosenIdx:chosen,status,marks:q.m,delta,section:q.s});
+    obtained+=delta; bySection[q.s].obt+=delta;
+    details.push({id:q.id,q:q.q,options:q.o||[],type:q.type||'mcq',correctIdx:q.a,chosenIdx:chosen,status,marks:q.m,delta,section:q.s,chosenDisplay,correctDisplay});
   });
-  obtained = Math.max(0, Math.round(obtained*100)/100);
+  obtained=Math.max(0,Math.round(obtained*100)/100);
   return {obtained,correct,wrong,skipped,bySection,details};
 }
-
 function doSubmit(autoTimeUp){
   if(state.submitted) return;
   state.submitted=true;
@@ -973,35 +1088,73 @@ function renderResultScreen(result, autoTimeUp, timeTakenSec){
 
   const tbody=document.querySelector('#sectionSummaryTable tbody');
   tbody.innerHTML="";
-  ["A","B"].forEach(s=>{
+  ["A","B","C"].forEach(s=>{
     const b=result.bySection[s];
     const tr=document.createElement('tr');
     tr.innerHTML = `<td style="text-align:left;font-weight:bold;">${SECTION_META[s].name}</td><td>${b.total}</td><td>${b.attempted}</td><td>${b.correct}</td><td>${Math.round(b.obt*100)/100}</td><td>${b.max}</td>`;
     tbody.appendChild(tr);
   });
 
-  // Detailed review
-  const reviewList=document.getElementById('reviewList');
-  if(CONFIG.SHOW_ANSWER_REVIEW){
-    reviewList.innerHTML="";
-    const letters=['A','B','C','D'];
-    result.details.forEach(d=>{
-      const div=document.createElement('div');
-      div.className="review-item "+d.status;
-      const chosenText = d.chosenIdx!==undefined ? letters[d.chosenIdx]+") "+d.options[d.chosenIdx] : "Not Attempted";
-      const correctText = letters[d.correctIdx]+") "+d.options[d.correctIdx];
-      div.innerHTML = `
-        <div class="rq">Q${d.id+1} [${SECTION_META[d.section].name.split('—')[1].trim()}, ${d.marks} mark${d.marks>1?'s':''}] — ${d.q}</div>
-        <div class="ra">Your answer: <span class="${d.status==='correct'?'tag-correct':(d.status==='wrong'?'tag-wrong':'')}">${chosenText}</span></div>
-        ${d.status!=='correct' ? `<div class="ra">Correct answer: <span class="tag-correct">${correctText}</span></div>` : ''}
-      `;
-      reviewList.appendChild(div);
-    });
+  // Detailed review — correct answers are withheld until state.revealAt
+  // (the moment this candidate's own test-duration window would naturally
+  // have ended), even if they submitted early. Marks/score above are shown
+  // right away; it's only the answer key / correct-vs-wrong breakdown that
+  // stays hidden until then.
+  const revealBtn=document.getElementById('btnToggleReview');
+  const lockedMsg=document.getElementById('reviewLockedMsg');
+  if(state.revealHandle){ clearInterval(state.revealHandle); state.revealHandle=null; }
+
+  if(!CONFIG.SHOW_ANSWER_REVIEW){
+    revealBtn.style.display='none';
+    lockedMsg.style.display='none';
+  } else if(Date.now() >= state.revealAt){
+    buildReviewList(result);
+    revealBtn.style.display='inline-block';
+    lockedMsg.style.display='none';
   } else {
-    document.getElementById('btnToggleReview').style.display='none';
+    revealBtn.style.display='none';
+    lockedMsg.style.display='block';
+    updateRevealCountdown();
+    state.revealHandle=setInterval(()=>{
+      updateRevealCountdown();
+      if(Date.now() >= state.revealAt){
+        clearInterval(state.revealHandle);
+        state.revealHandle=null;
+        buildReviewList(result);
+        lockedMsg.style.display='none';
+        revealBtn.style.display='inline-block';
+      }
+    },1000);
   }
 
   document.getElementById('btnDownloadBackup').onclick=()=>downloadBackup(result,timeTakenSec);
+}
+
+function updateRevealCountdown(){
+  const msLeft=Math.max(0, state.revealAt-Date.now());
+  const totalSec=Math.ceil(msLeft/1000);
+  const m=Math.floor(totalSec/60), s=totalSec%60;
+  const el=document.getElementById('revealCountdown');
+  if(el) el.textContent=String(m).padStart(2,'0')+":"+String(s).padStart(2,'0');
+}
+
+function buildReviewList(result){
+  const reviewList=document.getElementById('reviewList');
+  reviewList.innerHTML="";
+  const byId={}; result.details.forEach(d=>{ byId[d.id]=d; });
+  // Shown in this candidate's own randomized question order, same as they saw it.
+  DISPLAY_ORDER.forEach(qid=>{
+    const d=byId[qid];
+    if(!d) return;
+    const div=document.createElement('div');
+    div.className="review-item "+d.status;
+    div.innerHTML=`
+      <div class="rq">Q${d.id+1} [${SECTION_META[d.section].name.split('—')[1].trim()}, ${d.marks} mark${d.marks>1?'s':''}] — ${d.q}</div>
+      <div class="ra">Your answer: <span class="${d.status==='correct'?'tag-correct':(d.status==='wrong'?'tag-wrong':'')}">${d.chosenDisplay}</span></div>
+      ${d.status!=='correct'?`<div class="ra">Correct answer: <span class="tag-correct">${d.correctDisplay}</span></div>`:''}
+    `;
+    reviewList.appendChild(div);
+  });
 }
 document.getElementById('btnToggleReview').addEventListener('click',(e)=>{
   const rl=document.getElementById('reviewList');
@@ -1025,12 +1178,12 @@ function sendToBackend(result, timeTakenSec){
     name:state.candidate.name, roll:state.candidate.roll, email:state.candidate.email, cls:state.candidate.cls,
     totalMarks:TOTAL_MARKS, obtainedMarks:result.obtained, correctCount:result.correct, wrongCount:result.wrong,
     unattempted:result.skipped, percentage:((result.obtained/TOTAL_MARKS)*100).toFixed(2),
-    timeTakenSec:timeTakenSec, submittedAt:new Date().toISOString(),
+    timeTakenSec:timeTakenSec, submittedAt:nowIST(),
     autoSubmitReason: state.autoSubmitReason || (timeTakenSec>=CONFIG.DURATION_MINUTES*60 ? "Time up" : ""),
     violationCount: state.violations.length,
     violations: state.violations,
     identityPhoto: state.identityPhoto || "",
-    answers: result.details.map(d=>({q:d.id+1, chosen:d.chosenIdx, correct:d.correctIdx, status:d.status}))
+    answers: result.details.map(d=>({q:d.id+1, chosen:d.type==="text"?d.chosenDisplay:d.chosenIdx, correct:d.type==="text"?d.correctDisplay:d.correctIdx, status:d.status}))
   };
   fetch(CONFIG.SCRIPT_URL,{
     method:"POST",
@@ -1047,17 +1200,13 @@ function sendToBackend(result, timeTakenSec){
 }
 
 function downloadBackup(result,timeTakenSec){
-  // NOTE: deliberately omits correctIdx / per-question status so a downloaded backup
-  // cannot be used by the student to learn the correct answers. Only the instructor's
-  // response sheet (via sendToBackend) receives the full answer key.
-  const safeDetails = result.details.map(d=>({id:d.id, q:d.q, options:d.options, chosenIdx:d.chosenIdx, marks:d.marks, section:d.section}));
   const payload={
     candidate:state.candidate, totalMarks:TOTAL_MARKS, obtainedMarks:result.obtained,
     correct:result.correct, wrong:result.wrong, unattempted:result.skipped,
     percentage:((result.obtained/TOTAL_MARKS)*100).toFixed(2), timeTakenSec:timeTakenSec,
-    submittedAt:new Date().toISOString(), autoSubmitReason: state.autoSubmitReason || "",
+    submittedAt:nowIST(), autoSubmitReason: state.autoSubmitReason || "",
     violations: state.violations, identityPhotoIncluded: !!state.identityPhoto,
-    details:safeDetails
+    details:result.details
   };
   const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json"});
   const url=URL.createObjectURL(blob);
