@@ -212,7 +212,7 @@
   <div class="login-card">
     <div class="login-head">
       <h1>Direct Reading Quiz — Online Assessment</h1>
-      <p>Cryptography & Network Security · Total Marks: <b id="totalMarksTag">20</b></p>
+      <p>Networking and Technology · Total Marks: <b id="totalMarksTag">20</b></p>
     </div>
     <div class="login-body">
       <h3>Candidate Details</h3>
@@ -240,9 +240,9 @@
       <h3>General Instructions</h3>
       <div class="instructions" id="instructionsBox">
         <ol>
-          <li>The test consists of <b>22 questions</b> across three sections — <b>Section A: Basic</b> (12 × 1 mark = 12), <b>Section B: Intermediate</b> (5 × 2 marks = 10), and <b>Section C: Advanced</b> (5 × 3 marks = 15) — for a total of <b>37 marks</b>.</li>
+          <li>The test consists of <b>10 questions</b>, each carrying <b>2 marks</b>, for a total of <b>20 marks</b>.</li>
           <li>Total duration: <b id="durTag">60 minutes</b>. The test will <b>auto-submit</b> when the timer reaches zero.</li>
-          <li>There is <b>25% negative marking</b> on wrong answers in Section A (Basic) and Section B (Intermediate). <b>Section C (Advanced)</b> has <b>no negative marking</b>.</li>
+          <li>There is <b>25% negative marking</b> — you lose 0.5 marks for every wrong answer.</li>
           <li>Each multiple-choice question has exactly <b>one correct option</b>. Questions requiring a typed answer must be entered exactly as instructed.</li>
           <li>Use <b>Save &amp; Next</b> to save your answer and move to the next question.</li>
           <li>Use <b>Mark for Review &amp; Next</b> if you want to revisit a question later — it will still count if you also answered it.</li>
@@ -437,9 +437,8 @@ const CONFIG = {
 
   DURATION_MINUTES: 30,          // total test duration
   NEGATIVE_MARKING: true,        // set true to enable GATE-style negative marking
-  // Penalty per wrong answer, keyed by question mark value (only used if NEGATIVE_MARKING = true).
-  // Section A = 1 mark, Section B = 2 marks, Section C = 3 marks, so keying by mark value
-  // keys it by section: 25% negative marking on Sections A & B, none on Section C.
+  // Penalty per wrong answer, keyed by question mark value. All 10 questions in this
+  // quiz are worth 2 marks, so a value of 0.5 here = 25% negative marking throughout.
   NEG_FRACTION: {1:0.25, 2:0.5, 3:0},
   SHOW_ANSWER_REVIEW: true,      // show correct/incorrect review after submission (set false for strict exam mode)
   AUTOSAVE_KEY: "ehQuizAutosave_v1",
@@ -471,37 +470,26 @@ function nowIST(){
 }
 
 /* =====================================================================
-   QUESTION BANK — Quiz 1 | 22 Questions | 37 Marks | Cryptography, Info Security & Networking
-   Section A = Basic (1 mark) | Section B = Intermediate (2 marks) | Section C = Advanced (3 marks)
+   QUESTION BANK — Direct Reading Quiz | 10 Questions | 20 Marks | Networking & Technology
+   Sourced entirely from the UPES "Networking and Technology" (CSBC2027) question paper.
+   All 10 questions carry 2 marks each.
 ===================================================================== */
 const QUESTIONS = [
-{s:"C",m:3,type:"text",q:"Using the Playfair cipher, Encrypt the plaintext hello. Use x as the bogus letter (if required)\n\nSecret Key matrix:\nL G D B A\nQ M H E C\nU R N I/J F\nX V S O K\nZ Y W T P\n\nWRITE THE CIPHERTEXT IN CAPITAL LETTERS WITHOUT SPACE BETWEEN LETTERS.",answer:"ECQZBX"},
-{s:"A",m:1,type:"mcq",q:"In symmetric key cryptography, the same key is used for:",o:["Encryption only","Decryption only","Both encryption and decryption","Neither encryption nor decryption"],a:2},
-{s:"A",m:1,type:"mcq",q:"A Distributed Denial-of-Service (DDoS) attack mainly affects which security goal?",o:["Authentication","Integrity","Availability","Confidentiality"],a:2},
-{s:"A",m:1,type:"mcq",q:"An attacker who pretends to be a legitimate user to gain access is performing:",o:["Replay attack","Masquerade attack","SQL injection","Phishing attack"],a:1},
-{s:"B",m:2,type:"mcq",q:"Encrypt the plaintext “HELLO” using a Caesar cipher with a shift key of 3. The ciphertext is:",o:["KHOOR","KHLOO","LHOOR","KHOPR"],a:0},
-{s:"A",m:1,type:"mcq",q:"Which of the following is an example of a PASSIVE attack?",o:["Traffic analysis by an eavesdropper","Denial-of-Service (DoS) attack","Masquerade attack","Modification of messages in transit"],a:0},
-{s:"B",m:2,type:"mcq",q:"A monoalphabetic substitution cipher uses the key below:\n\nPlaintext:  a b c d e f g h i j k l m n o p q r s t u v w x y z\nCiphertext: Q W E R T Y U I O P A S D F G H J K L Z X C V B N M\n\nEncrypt the word “CIA”. Ciphertext is:",o:["EOQ","EOQR","QOE","EQO"],a:0},
-{s:"A",m:1,type:"mcq",q:"Which security service ensures that the sender cannot later deny that he/she had sent a message?",o:["Integrity","Authentication","Confidentiality","Non-repudiation"],a:3},
-{s:"A",m:1,type:"mcq",q:"The Caesar cipher is an example of a:",o:["Transposition cipher","Substitution cipher","Block cipher","Stream cipher"],a:1},
-{s:"C",m:3,type:"text",q:"An example key for monoalphabetic substitution cipher is given below:-\n\nPlaintext:  a b c d e f g h i j k l m n o p q r s t u v w x y z\nCiphertext: N O A T R B E C F U X D Q G Y L K H V I J M P Z S W\n\nUse the key to encrypt the message:- this message is easy to encrypt but hard to find the key\n\nWRITE THE CIPHERTEXT IN CAPITAL LETTERS WITHOUT SPACE BETWEEN LETTERS.",answer:"ICFVQRVVNEFVRNVSIYRGAHSLIOJICNHTIYBFGTICRXRS"},
-{s:"C",m:3,type:"text",q:"Encrypt the message “How was the test dear” using the 6-character keyword “PASCAL” using Vigenere method of cryptography.\n\nWRITE THE CIPHERTEXT IN CAPITAL LETTERS WITHOUT SPACE BETWEEN LETTERS.",answer:"XPPZBEJIXWFEJEXDS"},
-{s:"A",m:1,type:"mcq",q:"A replay attack (resending previously captured messages) is considered:",o:["Active attack threatening availability","Active attack threatening integrity","Passive attack threatening availability","Passive attack threatening confidentiality"],a:1},
-{s:"A",m:1,type:"mcq",q:"The Internet is best described as:",o:["A single computer network owned by one company","A network of networks connecting devices worldwide","A type of software application","A local telephone exchange"],a:1},
-{s:"A",m:1,type:"mcq",q:"HTTP is called a “stateless” protocol because:",o:["It always encrypts data between client and server","Each request is treated independently, with no memory of previous requests","It cannot transmit images or files","It only works over a UDP connection"],a:1},
-{s:"A",m:1,type:"mcq",q:"Which of the following is NOT a common network topology?",o:["Star","Bus","Firewall","Mesh"],a:2},
-{s:"A",m:1,type:"mcq",q:"Which of the following is a common network security threat?",o:["Bandwidth","Malware","Switch","Subnet"],a:1},
-{s:"A",m:1,type:"mcq",q:"In the CIA triad of network security, “A” stands for:",o:["Authentication","Authorization","Availability","Auditing"],a:2},
-{s:"B",m:2,type:"mcq",q:"A file of size 2 MB is sent over a link with a bandwidth of 8 Mbps. (Take 1 MB = 8 Mb.) The approximate time taken to send the file is:",o:["0.5 seconds","1 second","2 seconds","4 seconds"],a:2},
-{s:"B",m:2,type:"mcq",q:"Which statement correctly compares TCP and UDP?",o:["TCP is connectionless and unreliable; UDP is connection-oriented and reliable","TCP is connection-oriented and reliable; UDP is connectionless and unreliable","Both TCP and UDP guarantee reliable, ordered delivery","Both TCP and UDP are connection-oriented protocols"],a:1},
-{s:"B",m:2,type:"mcq",q:"FTP (File Transfer Protocol) uses two separate connections between client and server for its operation. These are:",o:["Control connection and Data connection","Upload connection and Download connection","TCP connection and UDP connection","Primary connection and Backup connection"],a:0},
-{s:"C",m:3,type:"text",q:"Four routers are connected in a simple line: R1 — R2 — R3 — R4. Using Distance Vector Routing, after the routing information has converged, what is the hop count from R1 to R4?\n\nWrite only the number.",answer:"3"},
-{s:"C",m:3,type:"text",q:"Using a columnar transposition cipher with the keyword “KEY”, encrypt the message “NETWORK”. Pad any leftover grid cells with the letter X, and read the columns in the alphabetical order of the keyword’s letters (E, K, Y).\n\nWRITE THE CIPHERTEXT IN CAPITAL LETTERS WITHOUT SPACE BETWEEN LETTERS.",answer:"EOXNWKTRX"}
+{s:"A",m:2,type:"mcq",q:"The Internet is best described as:",o:["A single computer network owned by one company","A network of networks connecting devices worldwide","A type of software application","A local telephone exchange"],a:1},
+{s:"A",m:2,type:"mcq",q:"HTTP is called a “stateless” protocol because:",o:["It always encrypts data between client and server","Each request is treated independently, with no memory of previous requests","It cannot transmit images or files","It only works over a UDP connection"],a:1},
+{s:"A",m:2,type:"mcq",q:"Which of the following is NOT a common network topology?",o:["Star","Bus","Firewall","Mesh"],a:2},
+{s:"A",m:2,type:"mcq",q:"What is bandwidth? A file of size 1 MB is sent over a link of 8 Mbps. (Take 1 MB = 8 Mb.) The time taken to send the file is closest to:",o:["0.5 seconds","1 second","2 seconds","4 seconds"],a:1},
+{s:"A",m:2,type:"mcq",q:"Which pair below represents two common threats to a network?",o:["Malware and Phishing","Switch and Router","Bandwidth and Subnet","Firewall and Gateway"],a:0},
+{s:"A",m:2,type:"mcq",q:"Which cloud service model provides only the underlying infrastructure (servers, storage, networking), leaving the customer to manage the OS and applications?",o:["SaaS (Software as a Service)","PaaS (Platform as a Service)","IaaS (Infrastructure as a Service)","DaaS (Desktop as a Service)"],a:2},
+{s:"A",m:2,type:"mcq",q:"A network switch primarily forwards data within a local area network (LAN) based on the:",o:["IP address","MAC address","Port number","Domain name"],a:1},
+{s:"A",m:2,type:"mcq",q:"FTP (File Transfer Protocol) uses two separate connections between client and server for its operation. These are:",o:["Control connection and Data connection","Upload connection and Download connection","TCP connection and UDP connection","Primary connection and Backup connection"],a:0},
+{s:"A",m:2,type:"mcq",q:"Four routers are connected in a simple line: R1 — R2 — R3 — R4. Using Distance Vector Routing, once the routing information has converged, the hop count from R1 to R4 is:",o:["1","2","3","4"],a:2},
+{s:"A",m:2,type:"mcq",q:"Dividing a large network into smaller subnets mainly helps to:",o:["Automatically increase the link's bandwidth","Improve manageability and reduce broadcast traffic","Eliminate the need for IP addresses","Convert TCP traffic into UDP traffic"],a:1}
 ];
 
 /* Assign global ids and section label metadata */
 const SECTION_META = {
-  A:{name:"Section A — Basic",   color:"#3fa34d"},
+  A:{name:"Section A — Networking & Technology", color:"#3fa34d"},
   B:{name:"Section B — Intermediate", color:"#1a73c7"},
   C:{name:"Section C — Advanced", color:"#8e44ad"}
 };
@@ -548,7 +536,7 @@ const QBYID={}; QUESTIONS.forEach(q=>{ QBYID[q.id]=q; });
 // replace this whole block with:
 //   let DISPLAY_ORDER = shuffleArray(QUESTIONS.map(q=>q.id));
 let DISPLAY_ORDER = [];
-["A","B","C"].forEach(sec=>{
+["A"].forEach(sec=>{
   const idsInSec = QUESTIONS.filter(q=>q.s===sec).map(q=>q.id);
   DISPLAY_ORDER.push(...shuffleArray(idsInSec));
 });
@@ -699,7 +687,7 @@ function enterFullscreenBestEffort(){
 function buildSectionBar(){
   const bar=document.getElementById('sectionBar');
   bar.innerHTML="";
-  ["A","B","C"].forEach(s=>{
+  ["A"].forEach(s=>{
     const span=document.createElement('span');
     span.className="stag";
     span.id="stag-"+s;
@@ -708,7 +696,7 @@ function buildSectionBar(){
   });
 }
 function updateSectionBarHighlight(sec){
-  ["A","B","C"].forEach(s=>{
+  ["A"].forEach(s=>{
     document.getElementById('stag-'+s).classList.toggle('on', s===sec);
   });
 }
@@ -719,7 +707,7 @@ function updateSectionBarHighlight(sec){
 function buildPalette(){
   const container=document.getElementById('paletteScroll');
   container.innerHTML="";
-  ["A","B","C"].forEach(sec=>{
+  ["A"].forEach(sec=>{
     const idsInSec = DISPLAY_ORDER.filter(id=>QBYID[id].s===sec);
     if(idsInSec.length===0) return;
     const title=document.createElement('div');
@@ -1088,7 +1076,7 @@ function renderResultScreen(result, autoTimeUp, timeTakenSec){
 
   const tbody=document.querySelector('#sectionSummaryTable tbody');
   tbody.innerHTML="";
-  ["A","B","C"].forEach(s=>{
+  ["A"].forEach(s=>{
     const b=result.bySection[s];
     const tr=document.createElement('tr');
     tr.innerHTML = `<td style="text-align:left;font-weight:bold;">${SECTION_META[s].name}</td><td>${b.total}</td><td>${b.attempted}</td><td>${b.correct}</td><td>${Math.round(b.obt*100)/100}</td><td>${b.max}</td>`;
