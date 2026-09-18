@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quiz 1_B18 — Online Test</title>
+<title>Direct Reading Quiz — Online Test</title>
 <style>
   /* ===================== CONFIG-DRIVEN LOOK: GATE / NTA CBT STYLE ===================== */
   :root{
@@ -211,7 +211,7 @@
 <div id="loginScreen" class="screen active">
   <div class="login-card">
     <div class="login-head">
-      <h1>Quiz 1_B18 — Online Assessment</h1>
+      <h1>Direct Reading Quiz — Online Assessment</h1>
       <p>Cryptography & Network Security · Total Marks: <b id="totalMarksTag">20</b></p>
     </div>
     <div class="login-body">
@@ -232,19 +232,17 @@
           <input type="email" id="candEmail" placeholder="e.g. priya@college.edu" autocomplete="off">
         </div>
         <div class="field">
-          <label for="candClass">Section Code *</label>
-          <input type="text" id="candClass" placeholder="e.g. B18" autocomplete="off">
-          <div class="error-msg" id="sectionError" style="display:none;">Incorrect section code. Ask your instructor for the correct code for this test.</div>
+          <label for="candClass">Class / Section (optional)</label>
+          <input type="text" id="candClass" placeholder="e.g. CSE-3A" autocomplete="off">
         </div>
       </div>
 
       <h3>General Instructions</h3>
       <div class="instructions" id="instructionsBox">
         <ol>
-          <li>You must enter the correct <b>Section Code</b> given by your instructor to unlock the Start Test button.</li>
-          <li>The test consists of <b>12 questions</b> across two sections — <b>Section A: Theoretical</b> (7 × 1 mark = 7) and <b>Section B: Numerical</b> (2 × 2 marks + 3 × 3 marks = 13) — for a total of <b>20 marks</b>.</li>
+          <li>The test consists of <b>22 questions</b> across three sections — <b>Section A: Basic</b> (12 × 1 mark = 12), <b>Section B: Intermediate</b> (5 × 2 marks = 10), and <b>Section C: Advanced</b> (5 × 3 marks = 15) — for a total of <b>37 marks</b>.</li>
           <li>Total duration: <b id="durTag">60 minutes</b>. The test will <b>auto-submit</b> when the timer reaches zero.</li>
-          <li>There is <b>25% negative marking</b> on wrong answers in <b>Section A (Theoretical)</b>. <b>Section B (Numerical)</b> has <b>no negative marking</b>.</li>
+          <li>There is <b>25% negative marking</b> on wrong answers in Section A (Basic) and Section B (Intermediate). <b>Section C (Advanced)</b> has <b>no negative marking</b>.</li>
           <li>Each multiple-choice question has exactly <b>one correct option</b>. Questions requiring a typed answer must be entered exactly as instructed.</li>
           <li>Use <b>Save &amp; Next</b> to save your answer and move to the next question.</li>
           <li>Use <b>Mark for Review &amp; Next</b> if you want to revisit a question later — it will still count if you also answered it.</li>
@@ -297,7 +295,7 @@
       </div>
 
       <button id="startBtn" disabled>Start Test</button>
-      <div class="error-msg" id="loginError">Please fill in your Name, Roll No., and the correct Section Code, capture your identity photo, and accept the declaration above.</div>
+      <div class="error-msg" id="loginError">Please fill in your Name and Roll No., capture your identity photo, and accept the declaration above.</div>
     </div>
   </div>
 </div>
@@ -308,7 +306,7 @@
 <div id="examScreen" class="screen">
   <div class="topbar">
     <div>
-      <div class="title">Quiz 1_B18 — Online Assessment</div>
+      <div class="title">Direct Reading Quiz — Online Assessment</div>
       <div class="sub">· Total Marks: 20</div>
     </div>
     <div class="cand-timer">
@@ -435,17 +433,16 @@
 const CONFIG = {
   // Paste your deployed Google Apps Script Web App URL here (see hosting guide).
   // Leave as-is to run the quiz WITHOUT centralized response collection.
-  SCRIPT_URL: "https://script.google.com/macros/s/AKfycbw4xFvRCPst_4z16wa5E3NMc09wK3uMJQn4Rb6jTgNrwa5NGDtspIDTOCXFnjI3VxqJIQ/exec",
+  SCRIPT_URL: "https://script.google.com/macros/s/AKfycbxudopAC1JjEbxiltS8aQCB3eR4fZ7X9wgrl53zZk7-5IdzSo2Lkp7dDOPFKbbyauXFnQ/exec",
 
   DURATION_MINUTES: 30,          // total test duration
   NEGATIVE_MARKING: true,        // set true to enable GATE-style negative marking
   // Penalty per wrong answer, keyed by question mark value (only used if NEGATIVE_MARKING = true).
-  // Section A (Theoretical) is uniquely 1 mark per question, so keying by mark value
-  // restricts negative marking to Section A only: 25% penalty there, none in Section B (2-3 marks).
-  NEG_FRACTION: {1:0.25, 2:0, 3:0},
+  // Section A = 1 mark, Section B = 2 marks, Section C = 3 marks, so keying by mark value
+  // keys it by section: 25% negative marking on Sections A & B, none on Section C.
+  NEG_FRACTION: {1:0.25, 2:0.5, 3:0},
   SHOW_ANSWER_REVIEW: true,      // show correct/incorrect review after submission (set false for strict exam mode)
   AUTOSAVE_KEY: "ehQuizAutosave_v1",
-  SECTION_CODE: "B16",           // students must type this (case-insensitive) in the Section field to unlock Start Test
 
   // ---------------- SECURITY / LOCKDOWN SETTINGS ----------------
   ENABLE_SECURITY_LOCKDOWN: true,   // master switch for tab/fullscreen monitoring + copy-paste blocking
@@ -474,26 +471,39 @@ function nowIST(){
 }
 
 /* =====================================================================
-   QUESTION BANK — Quiz 1 | 10 Questions | 20 Marks | Classical Cryptography
-   Section A = Theoretical (5 x 1 mark, negative marking ON) | Section B = Numerical (5 x 3 marks, negative marking OFF)
+   QUESTION BANK — Quiz 1 | 22 Questions | 37 Marks | Cryptography, Info Security & Networking
+   Section A = Basic (1 mark) | Section B = Intermediate (2 marks) | Section C = Advanced (3 marks)
 ===================================================================== */
 const QUESTIONS = [
-{s:"A",m:1,type:"mcq",q:"Which of the following is NOT one of the fundamental objectives of the CIA triad?",o:["Confidentiality","Integrity","Availability","Accountability"],a:3},
-{s:"A",m:1,type:"mcq",q:"A cryptanalyst intercepts a large amount of ciphertext generated using a monoalphabetic substitution cipher, but does not know the encryption key. Which technique would be most useful for recovering the plaintext?",o:["Frequency analysis, because the statistical frequencies of plaintext letters are reflected in the ciphertext","Matrix inversion, because every substitution cipher uses matrices","Traffic padding, because it reveals the encryption key","Transposition analysis, because substitution changes only the positions of letters"],a:0},
-{s:"A",m:1,type:"mcq",q:"Which type of attack involves observing the communication or traffic pattern without modifying the transmitted data?",o:["Replay attack","Traffic analysis","Modification attack","Fabrication attack"],a:1},
-{s:"A",m:1,type:"mcq",q:"Which security service provides assurance that a communicating entity is the one it claims to be?",o:["Access Control","Authentication","Data Integrity","Non-Repudiation"],a:1},
-{s:"A",m:1,type:"mcq",q:"Which of the following is a specific security mechanism defined in the X.800 security architecture?",o:["Trusted functionality","Security audit trail","Encipherment","Event detection"],a:2},
-{s:"B",m:3,type:"text",q:"One-Time Pad (OTP) \u2014 Key Generation and Encryption\n\nUsing an OTP-style encryption scheme, encrypt the following plaintext:\n\nINFORMATIONSECURITYNETWORK\n\nUse A = 0, B = 1, ..., Z = 25.\n\nKey generation:\n- Start with the six-letter seed CRYPTO.\n- Convert the seed letters into numerical values using A = 0, ..., Z = 25.\n- After the initial six letters, generate each new key value using: K(i) = (K(i-1) + K(i-2)) mod 26\n- Continue until the generated key is the same length as the plaintext.\n\nEncrypt each plaintext letter using: C = (P + K) mod 26\n\nWRITE THE CIPHERTEXT IN CAPITAL LETTERS WITHOUT SPACE BETWEEN LETTERS.",answer:"KEDDKAHOKLMOZTGUXLFMKYHESB"},
-{s:"B",m:3,type:"text",dynamic:"playfair-name-hello",plaintext:"HELLO",q:"Using the FIRST 4 LETTERS of your own full name as the Playfair keyword (spaces removed; if your name has fewer than 4 letters, pad with 'X' at the end to make 4), build your personal 5\u00d75 Playfair matrix: write the keyword letters first (no repeats, I and J share a cell), then fill the remaining cells with the unused letters of the alphabet in order.\n\nUsing YOUR OWN matrix, encrypt the plaintext HELLO (insert X between two repeated letters that fall in the same pair; pad a leftover final letter with X).\n\nYour personal keyword (derived from your name): {{KEY}}\n\nWRITE THE CIPHERTEXT IN CAPITAL LETTERS WITHOUT SPACE BETWEEN LETTERS."},
-{s:"B",m:3,type:"text",q:"Playfair Cipher \u2014 Decryption\n\nA 5\u00d75 Playfair matrix is generated from the keyword \u201cGOD IS GREAT\u201d (remove duplicate letters, merge I/J into one cell, then fill the remaining cells with the unused letters of the alphabet in order).\n\nUsing this matrix, decrypt the following ciphertext and recover the original text:\n\nOQNECVTBSDUORFMBTKZY\n\nWRITE THE RECOVERED TEXT IN CAPITAL LETTERS WITHOUT SPACE BETWEEN LETTERS (including any trailing filler letter produced by the digraph decryption).",answer:"INFORMATIONSECURITYX"},
-{s:"B",m:3,type:"text",q:"Hill Cipher \u2014 Decryption\n\nIn a Hill cipher, the following 2\u00d72 key matrix is used:\n\nK = [ 3  3 ]\n    [ 2  5 ]\n\nThe ciphertext obtained after encryption is:\n\nSEYD\n\nUsing the above key matrix, decrypt the ciphertext and determine the original plaintext. Show all your working (inverse key matrix, then the recovered plaintext).\n\nWRITE THE PLAINTEXT IN CAPITAL LETTERS WITHOUT SPACE BETWEEN LETTERS.",answer:"MEET"},
-{s:"B",m:3,type:"text",q:"Encrypt the message \u201cHow was the test dear\u201d using the 6-character keyword \u201cPASCAL\u201d using Vigenere method of cryptography.\n\nWRITE THE CIPHERTEXT IN CAPITAL LETTERS WITHOUT SPACE BETWEEN LETTERS.",answer:"WOOYADIHWVEDIDWCR"}
+{s:"C",m:3,type:"text",q:"Using the Playfair cipher, Encrypt the plaintext hello. Use x as the bogus letter (if required)\n\nSecret Key matrix:\nL G D B A\nQ M H E C\nU R N I/J F\nX V S O K\nZ Y W T P\n\nWRITE THE CIPHERTEXT IN CAPITAL LETTERS WITHOUT SPACE BETWEEN LETTERS.",answer:"ECQZBX"},
+{s:"A",m:1,type:"mcq",q:"In symmetric key cryptography, the same key is used for:",o:["Encryption only","Decryption only","Both encryption and decryption","Neither encryption nor decryption"],a:2},
+{s:"A",m:1,type:"mcq",q:"A Distributed Denial-of-Service (DDoS) attack mainly affects which security goal?",o:["Authentication","Integrity","Availability","Confidentiality"],a:2},
+{s:"A",m:1,type:"mcq",q:"An attacker who pretends to be a legitimate user to gain access is performing:",o:["Replay attack","Masquerade attack","SQL injection","Phishing attack"],a:1},
+{s:"B",m:2,type:"mcq",q:"Encrypt the plaintext “HELLO” using a Caesar cipher with a shift key of 3. The ciphertext is:",o:["KHOOR","KHLOO","LHOOR","KHOPR"],a:0},
+{s:"A",m:1,type:"mcq",q:"Which of the following is an example of a PASSIVE attack?",o:["Traffic analysis by an eavesdropper","Denial-of-Service (DoS) attack","Masquerade attack","Modification of messages in transit"],a:0},
+{s:"B",m:2,type:"mcq",q:"A monoalphabetic substitution cipher uses the key below:\n\nPlaintext:  a b c d e f g h i j k l m n o p q r s t u v w x y z\nCiphertext: Q W E R T Y U I O P A S D F G H J K L Z X C V B N M\n\nEncrypt the word “CIA”. Ciphertext is:",o:["EOQ","EOQR","QOE","EQO"],a:0},
+{s:"A",m:1,type:"mcq",q:"Which security service ensures that the sender cannot later deny that he/she had sent a message?",o:["Integrity","Authentication","Confidentiality","Non-repudiation"],a:3},
+{s:"A",m:1,type:"mcq",q:"The Caesar cipher is an example of a:",o:["Transposition cipher","Substitution cipher","Block cipher","Stream cipher"],a:1},
+{s:"C",m:3,type:"text",q:"An example key for monoalphabetic substitution cipher is given below:-\n\nPlaintext:  a b c d e f g h i j k l m n o p q r s t u v w x y z\nCiphertext: N O A T R B E C F U X D Q G Y L K H V I J M P Z S W\n\nUse the key to encrypt the message:- this message is easy to encrypt but hard to find the key\n\nWRITE THE CIPHERTEXT IN CAPITAL LETTERS WITHOUT SPACE BETWEEN LETTERS.",answer:"ICFVQRVVNEFVRNVSIYRGAHSLIOJICNHTIYBFGTICRXRS"},
+{s:"C",m:3,type:"text",q:"Encrypt the message “How was the test dear” using the 6-character keyword “PASCAL” using Vigenere method of cryptography.\n\nWRITE THE CIPHERTEXT IN CAPITAL LETTERS WITHOUT SPACE BETWEEN LETTERS.",answer:"XPPZBEJIXWFEJEXDS"},
+{s:"A",m:1,type:"mcq",q:"A replay attack (resending previously captured messages) is considered:",o:["Active attack threatening availability","Active attack threatening integrity","Passive attack threatening availability","Passive attack threatening confidentiality"],a:1},
+{s:"A",m:1,type:"mcq",q:"The Internet is best described as:",o:["A single computer network owned by one company","A network of networks connecting devices worldwide","A type of software application","A local telephone exchange"],a:1},
+{s:"A",m:1,type:"mcq",q:"HTTP is called a “stateless” protocol because:",o:["It always encrypts data between client and server","Each request is treated independently, with no memory of previous requests","It cannot transmit images or files","It only works over a UDP connection"],a:1},
+{s:"A",m:1,type:"mcq",q:"Which of the following is NOT a common network topology?",o:["Star","Bus","Firewall","Mesh"],a:2},
+{s:"A",m:1,type:"mcq",q:"Which of the following is a common network security threat?",o:["Bandwidth","Malware","Switch","Subnet"],a:1},
+{s:"A",m:1,type:"mcq",q:"In the CIA triad of network security, “A” stands for:",o:["Authentication","Authorization","Availability","Auditing"],a:2},
+{s:"B",m:2,type:"mcq",q:"A file of size 2 MB is sent over a link with a bandwidth of 8 Mbps. (Take 1 MB = 8 Mb.) The approximate time taken to send the file is:",o:["0.5 seconds","1 second","2 seconds","4 seconds"],a:2},
+{s:"B",m:2,type:"mcq",q:"Which statement correctly compares TCP and UDP?",o:["TCP is connectionless and unreliable; UDP is connection-oriented and reliable","TCP is connection-oriented and reliable; UDP is connectionless and unreliable","Both TCP and UDP guarantee reliable, ordered delivery","Both TCP and UDP are connection-oriented protocols"],a:1},
+{s:"B",m:2,type:"mcq",q:"FTP (File Transfer Protocol) uses two separate connections between client and server for its operation. These are:",o:["Control connection and Data connection","Upload connection and Download connection","TCP connection and UDP connection","Primary connection and Backup connection"],a:0},
+{s:"C",m:3,type:"text",q:"Four routers are connected in a simple line: R1 — R2 — R3 — R4. Using Distance Vector Routing, after the routing information has converged, what is the hop count from R1 to R4?\n\nWrite only the number.",answer:"3"},
+{s:"C",m:3,type:"text",q:"Using a columnar transposition cipher with the keyword “KEY”, encrypt the message “NETWORK”. Pad any leftover grid cells with the letter X, and read the columns in the alphabetical order of the keyword’s letters (E, K, Y).\n\nWRITE THE CIPHERTEXT IN CAPITAL LETTERS WITHOUT SPACE BETWEEN LETTERS.",answer:"EOXNWKTRX"}
 ];
 
 /* Assign global ids and section label metadata */
 const SECTION_META = {
-  A:{name:"Section A — Theoretical",   color:"#3fa34d"},
-  B:{name:"Section B — Numerical", color:"#1a73c7"}
+  A:{name:"Section A — Basic",   color:"#3fa34d"},
+  B:{name:"Section B — Intermediate", color:"#1a73c7"},
+  C:{name:"Section C — Advanced", color:"#8e44ad"}
 };
 QUESTIONS.forEach((q,i)=>{ q.id=i; });
 const TOTAL_MARKS = QUESTIONS.reduce((sum,q)=>sum+q.m,0);
@@ -509,9 +519,9 @@ const TOTAL_MARKS = QUESTIONS.reduce((sum,q)=>sum+q.m,0);
    the student SEES on screen is reordered/relabeled.
 
    - Question order is shuffled WITHIN each section (Section A, then B,
-     stay in that block order — only the questions inside each
-     block are shuffled), so the paper still flows Theoretical ->
-     Numerical. Change to a fully global shuffle if you don't want
+     then C stay in that block order — only the questions inside each
+     block are shuffled), so the paper still flows Basic -> Intermediate
+     -> Advanced. Change to a fully global shuffle if you don't want
      that grouping — see comment below.
    - For MCQ questions, the 4 options are shuffled and q.a (the correct
      index) is remapped to match, so scoring stays correct.
@@ -538,7 +548,7 @@ const QBYID={}; QUESTIONS.forEach(q=>{ QBYID[q.id]=q; });
 // replace this whole block with:
 //   let DISPLAY_ORDER = shuffleArray(QUESTIONS.map(q=>q.id));
 let DISPLAY_ORDER = [];
-["A","B"].forEach(sec=>{
+["A","B","C"].forEach(sec=>{
   const idsInSec = QUESTIONS.filter(q=>q.s===sec).map(q=>q.id);
   DISPLAY_ORDER.push(...shuffleArray(idsInSec));
 });
@@ -626,25 +636,18 @@ btnCamRetake.addEventListener('click', ()=>{
    LOGIN SCREEN LOGIC
 ===================================================================== */
 const nameEl=document.getElementById('candName'), rollEl=document.getElementById('candRoll');
-const classEl=document.getElementById('candClass'), sectionErrorEl=document.getElementById('sectionError');
 const agreeEl=document.getElementById('agreeBox'), startBtn=document.getElementById('startBtn');
-function sectionCodeOk(){
-  return classEl.value.trim().toUpperCase() === CONFIG.SECTION_CODE.toUpperCase();
-}
 function validateLogin(){
   const photoOk = !CONFIG.REQUIRE_WEBCAM || !!state.identityPhoto;
-  const codeOk = sectionCodeOk();
-  sectionErrorEl.style.display = (classEl.value.trim().length>0 && !codeOk) ? 'block' : 'none';
-  const ok = nameEl.value.trim().length>1 && rollEl.value.trim().length>1 && agreeEl.checked && photoOk && codeOk;
+  const ok = nameEl.value.trim().length>1 && rollEl.value.trim().length>1 && agreeEl.checked && photoOk;
   startBtn.disabled = !ok;
 }
-[nameEl,rollEl,classEl,agreeEl].forEach(el=>el.addEventListener('input',validateLogin));
+[nameEl,rollEl,agreeEl].forEach(el=>el.addEventListener('input',validateLogin));
 agreeEl.addEventListener('change',validateLogin);
 
 startBtn.addEventListener('click',()=>{
   if(startBtn.disabled){
     document.getElementById('loginError').style.display='block';
-    if(!sectionCodeOk()){ sectionErrorEl.style.display='block'; }
     return;
   }
   state.candidate.name=nameEl.value.trim();
@@ -696,7 +699,7 @@ function enterFullscreenBestEffort(){
 function buildSectionBar(){
   const bar=document.getElementById('sectionBar');
   bar.innerHTML="";
-  ["A","B"].forEach(s=>{
+  ["A","B","C"].forEach(s=>{
     const span=document.createElement('span');
     span.className="stag";
     span.id="stag-"+s;
@@ -705,7 +708,7 @@ function buildSectionBar(){
   });
 }
 function updateSectionBarHighlight(sec){
-  ["A","B"].forEach(s=>{
+  ["A","B","C"].forEach(s=>{
     document.getElementById('stag-'+s).classList.toggle('on', s===sec);
   });
 }
@@ -716,7 +719,7 @@ function updateSectionBarHighlight(sec){
 function buildPalette(){
   const container=document.getElementById('paletteScroll');
   container.innerHTML="";
-  ["A","B"].forEach(sec=>{
+  ["A","B","C"].forEach(sec=>{
     const idsInSec = DISPLAY_ORDER.filter(id=>QBYID[id].s===sec);
     if(idsInSec.length===0) return;
     const title=document.createElement('div');
@@ -760,66 +763,6 @@ function refreshPalette(){
 /* =====================================================================
    RENDER QUESTION
 ===================================================================== */
-/* =====================================================================
-   DYNAMIC / PER-CANDIDATE PLAYFAIR — used by the {dynamic:"playfair-name-hello"}
-   question. The Playfair keyword is derived from each student's own name
-   (first 4 letters, spaces stripped, padded with 'X' if the name is short),
-   so every candidate has a different correct answer — auto-graded here.
-===================================================================== */
-function extractNameKey(fullName, length){
-  length = length || 4;
-  let letters = (fullName||"").toUpperCase().replace(/[^A-Z]/g,"");
-  if(letters.length < length){ letters += "X".repeat(length-letters.length); }
-  return letters.slice(0, length);
-}
-function buildPlayfairMatrixJS(keyword){
-  keyword = (keyword||"").toUpperCase().replace(/J/g,"I").replace(/[^A-Z]/g,"");
-  const seen=[];
-  for(const ch of keyword){ if(!seen.includes(ch)) seen.push(ch); }
-  const alphabet="ABCDEFGHIKLMNOPQRSTUVWXYZ"; // no J — merged into I
-  for(const ch of alphabet){ if(!seen.includes(ch)) seen.push(ch); }
-  const matrix=[];
-  for(let r=0;r<5;r++){ matrix.push(seen.slice(r*5,r*5+5)); }
-  return matrix;
-}
-function playfairPosMapJS(matrix){
-  const pos={};
-  for(let r=0;r<5;r++){ for(let c=0;c<5;c++){ pos[matrix[r][c]]=[r,c]; } }
-  return pos;
-}
-function preparePlayfairPairsJS(text){
-  const chars=(text||"").toUpperCase().replace(/J/g,"I").replace(/[^A-Z]/g,"").split("");
-  const result=[]; let i=0;
-  while(i<chars.length){
-    const a=chars[i];
-    if(i+1<chars.length){
-      const b=chars[i+1];
-      if(a===b){ result.push(a+"X"); i+=1; }
-      else { result.push(a+b); i+=2; }
-    } else { result.push(a+"X"); i+=1; }
-  }
-  return result;
-}
-function playfairEncryptPairJS(a,b,matrix,pos){
-  const pa=pos[a], pb=pos[b];
-  if(pa[0]===pb[0]){ return matrix[pa[0]][(pa[1]+1)%5]+matrix[pb[0]][(pb[1]+1)%5]; }
-  else if(pa[1]===pb[1]){ return matrix[(pa[0]+1)%5][pa[1]]+matrix[(pb[0]+1)%5][pb[1]]; }
-  else { return matrix[pa[0]][pb[1]]+matrix[pb[0]][pa[1]]; }
-}
-function playfairEncryptJS(text, keyword){
-  const matrix=buildPlayfairMatrixJS(keyword);
-  const pos=playfairPosMapJS(matrix);
-  const pairs=preparePlayfairPairsJS(text);
-  return pairs.map(p=>playfairEncryptPairJS(p[0],p[1],matrix,pos)).join("");
-}
-function resolveDynamicQuestionText(q){
-  if(q.dynamic==="playfair-name-hello"){
-    const key=extractNameKey(state.candidate.name,4);
-    return q.q.replace("{{KEY}}", key);
-  }
-  return q.q;
-}
-
 function renderQuestion(pos){
   // pos = the student's own randomized position (0-based) in DISPLAY_ORDER.
   // qid = the permanent original question id — used for all state tracking
@@ -834,7 +777,7 @@ function renderQuestion(pos){
   document.getElementById('qNoLabel').textContent = "Question "+(pos+1)+" of "+QUESTIONS.length;
   document.getElementById('qMarksLabel').textContent = "+"+q.m;
   document.getElementById('qNegLabel').textContent = CONFIG.NEGATIVE_MARKING ? ("-"+(CONFIG.NEG_FRACTION[q.m]||0).toFixed(2)) : "0";
-  document.getElementById('qText').textContent = (pos+1)+". "+resolveDynamicQuestionText(q);
+  document.getElementById('qText').textContent = (pos+1)+". "+q.q;
 
   const optWrap=document.getElementById('qOptions');
   optWrap.innerHTML="";
@@ -1078,19 +1021,16 @@ function openSubmitModal(){
 
 function scoreTest(){
   let obtained=0, correct=0, wrong=0, skipped=0;
-  const bySection={A:{max:0,obt:0,correct:0,attempted:0,total:0},B:{max:0,obt:0,correct:0,attempted:0,total:0}};
+  const bySection={A:{max:0,obt:0,correct:0,attempted:0,total:0},B:{max:0,obt:0,correct:0,attempted:0,total:0},C:{max:0,obt:0,correct:0,attempted:0,total:0}};
   const details=[];
   QUESTIONS.forEach(q=>{
     bySection[q.s].max+=q.m; bySection[q.s].total+=1;
     const chosen=state.answers[q.id]; let status='skip',delta=0,chosenDisplay='Not Attempted',correctDisplay='';
     if(q.type==='text'){
-      const expectedAnswer = q.dynamic==="playfair-name-hello"
-        ? playfairEncryptJS(q.plaintext, extractNameKey(state.candidate.name,4))
-        : q.answer;
-      correctDisplay=expectedAnswer;
+      correctDisplay=q.answer;
       if(chosen===undefined || String(chosen).trim()===''){ skipped++; }
       else { bySection[q.s].attempted++; chosenDisplay=String(chosen).trim().toUpperCase();
-        if(chosenDisplay===expectedAnswer){correct++;delta=q.m;status='correct';bySection[q.s].correct++;}
+        if(chosenDisplay===q.answer){correct++;delta=q.m;status='correct';bySection[q.s].correct++;}
         else {wrong++;status='wrong';if(CONFIG.NEGATIVE_MARKING)delta=-(CONFIG.NEG_FRACTION[q.m]||0);}
       }
     }else{
@@ -1102,7 +1042,7 @@ function scoreTest(){
       }
     }
     obtained+=delta; bySection[q.s].obt+=delta;
-    details.push({id:q.id,q:resolveDynamicQuestionText(q),options:q.o||[],type:q.type||'mcq',correctIdx:q.a,chosenIdx:chosen,status,marks:q.m,delta,section:q.s,chosenDisplay,correctDisplay});
+    details.push({id:q.id,q:q.q,options:q.o||[],type:q.type||'mcq',correctIdx:q.a,chosenIdx:chosen,status,marks:q.m,delta,section:q.s,chosenDisplay,correctDisplay});
   });
   obtained=Math.max(0,Math.round(obtained*100)/100);
   return {obtained,correct,wrong,skipped,bySection,details};
@@ -1148,7 +1088,7 @@ function renderResultScreen(result, autoTimeUp, timeTakenSec){
 
   const tbody=document.querySelector('#sectionSummaryTable tbody');
   tbody.innerHTML="";
-  ["A","B"].forEach(s=>{
+  ["A","B","C"].forEach(s=>{
     const b=result.bySection[s];
     const tr=document.createElement('tr');
     tr.innerHTML = `<td style="text-align:left;font-weight:bold;">${SECTION_META[s].name}</td><td>${b.total}</td><td>${b.attempted}</td><td>${b.correct}</td><td>${Math.round(b.obt*100)/100}</td><td>${b.max}</td>`;
