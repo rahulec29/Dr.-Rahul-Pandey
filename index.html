@@ -242,8 +242,9 @@
         <ol>
           <li>The test consists of <b>7 questions</b> across three parts — <b>Part A: Objective</b> (4 × 5 marks = 20), <b>Part B: Short Answer</b> (2 × 10 marks = 20), and <b>Part C: Long Answer</b> (1 × 10 marks) — for a total of <b>50 marks</b>.</li>
           <li>Total duration: <b id="durTag">60 minutes</b>. The test will <b>auto-submit</b> when the timer reaches zero.</li>
-          <li>There is <b>25% negative marking</b> on wrong answers in Part A and Part B (you lose 1.25 marks per wrong answer in Part A, 2.5 in Part B). <b>Part C</b> has <b>no negative marking</b>.</li>
+          <li>There is <b>25% negative marking</b> on wrong answers in Part A (you lose 1.25 marks per wrong answer). Part B and Part C are subjective, manually-graded questions with <b>no negative marking</b>.</li>
           <li>Each multiple-choice question has exactly <b>one correct option</b>. Questions requiring a typed answer must be entered exactly as instructed.</li>
+          <li>Some questions are <b>subjective</b> — you must upload a clear photo or scan of your handwritten/typed answer (JPG/PNG). These are graded manually by your instructor and are <b>not included</b> in the score shown immediately after submission.</li>
           <li>Use <b>Save &amp; Next</b> to save your answer and move to the next question.</li>
           <li>Use <b>Mark for Review &amp; Next</b> if you want to revisit a question later — it will still count if you also answered it.</li>
           <li>Use <b>Clear Response</b> to deselect your chosen option for the current question.</li>
@@ -401,10 +402,11 @@
     </div>
     <div class="result-body">
       <div id="submitStatusBanner"></div>
+      <div id="pendingReviewNote" style="display:none;background:#fff8e1;border:1px solid #e0c46c;border-radius:6px;padding:10px 14px;margin-bottom:14px;font-size:13.5px;color:#6b5410;"></div>
       <div class="score-grid">
-        <div class="score-card good"><div class="num" id="resObtained">0</div><div class="lbl">Marks Obtained</div></div>
+        <div class="score-card good"><div class="num" id="resObtained">0</div><div class="lbl">Marks Obtained (Auto-Graded)</div></div>
         <div class="score-card"><div class="num" id="resTotal">20</div><div class="lbl">Total Marks</div></div>
-        <div class="score-card"><div class="num" id="resPercent">0%</div><div class="lbl">Percentage</div></div>
+        <div class="score-card"><div class="num" id="resPercent">0%</div><div class="lbl">Percentage (Auto-Graded)</div></div>
         <div class="score-card good"><div class="num" id="resCorrect">0</div><div class="lbl">Correct</div></div>
         <div class="score-card bad"><div class="num" id="resWrong">0</div><div class="lbl">Incorrect</div></div>
         <div class="score-card"><div class="num" id="resSkipped">0</div><div class="lbl">Unattempted</div></div>
@@ -433,14 +435,14 @@
 const CONFIG = {
   // Paste your deployed Google Apps Script Web App URL here (see hosting guide).
   // Leave as-is to run the quiz WITHOUT centralized response collection.
-  SCRIPT_URL: "https://script.google.com/macros/s/AKfycbyWxRaDvapVtW_Io3t2icKbmKkv5HVa4AIrOOh4imxmvh92ptojYZB1Bc7_W6lUpInj/exec",
+  SCRIPT_URL: "https://script.google.com/macros/s/AKfycbxSsgj89xeVronA9tFPdJ_5AfrtwLOxaS8uXJ5N2a3VHAE-CE3I26ydYdj0rAe-oJVw/exec",
 
   DURATION_MINUTES: 30,          // total test duration
   NEGATIVE_MARKING: true,        // set true to enable GATE-style negative marking
-  // Penalty per wrong answer, keyed by SECTION (not mark value, since Part B and Part C
-  // both carry 10 marks but only Part B/A's objective questions should be negatively marked).
-  // 25% negative marking on Part A & Part B; none on Part C (typed, long-answer).
-  NEG_FRACTION: {A:1.25, B:2.5, C:0},
+  // Penalty per wrong answer, keyed by SECTION. Part A (MCQ) has 25% negative marking.
+  // Part B and Part C are now subjective "upload" questions graded manually — negative
+  // marking never applies to them regardless of this value (see scoreTest()).
+  NEG_FRACTION: {A:1.25, B:0, C:0},
   SHOW_ANSWER_REVIEW: true,      // show correct/incorrect review after submission (set false for strict exam mode)
   AUTOSAVE_KEY: "ehQuizAutosave_v1",
 
@@ -479,9 +481,9 @@ const QUESTIONS = [
 {s:"A",m:5,type:"mcq",q:"HTTP stands for:",o:["HyperText Transfer Protocol","High Transfer Text Protocol","Host Transfer Protocol","Hyperlink Text Protocol"],a:0},
 {s:"A",m:5,type:"mcq",q:"Which topology connects all devices to a single central hub?",o:["Bus","Ring","Star","Mesh"],a:2},
 {s:"A",m:5,type:"mcq",q:"Which protocol guarantees reliable, ordered delivery of data?",o:["UDP","IP","TCP","ARP"],a:2},
-{s:"B",m:10,type:"mcq",q:"What is bandwidth? A file of size 4 MB is sent over a link of 8 Mbps. (Take 1 MB = 8 Mb.) The time taken to send the file is:",o:["1 second","2 seconds","4 seconds","8 seconds"],a:2},
-{s:"B",m:10,type:"mcq",q:"Which pair below represents two common threats to a network?",o:["Malware and Phishing","Switch and Router","Bandwidth and Subnet","Firewall and Gateway"],a:0},
-{s:"C",m:10,type:"text",q:"What is a cipher? The Caesar cipher encrypts a message by shifting each letter a fixed number of positions in the alphabet. Using a shift key of 3, encrypt the message “NETWORK”.\n\nWRITE THE CIPHERTEXT IN CAPITAL LETTERS WITHOUT SPACE BETWEEN LETTERS.",answer:"QHWZRUN"}
+{s:"B",m:10,type:"upload",q:"Using Dijkstra's algorithm, find the shortest path and its total distance from node A to node E in the graph below. Show your working step by step.\n\nEdges (undirected) with weights: A–B = 4, A–C = 2, B–C = 1, B–D = 5, C–D = 8, C–E = 10, D–E = 2, B–E = 6.\n\nUpload a clear photo or scan of your handwritten, step-by-step solution."},
+{s:"B",m:10,type:"upload",q:"Explain the CIA triad (Confidentiality, Integrity, and Availability) in network security. Give one real-world example illustrating each of the three principles.\n\nUpload a clear photo or scan of your handwritten or typed answer."},
+{s:"C",m:10,type:"upload",q:"Explain the OSI (Open Systems Interconnection) reference model. List all seven layers in the correct order and briefly describe one function of each layer.\n\nUpload a clear photo or scan of your handwritten or typed answer, including a labeled diagram if possible."}
 ];
 
 /* Assign global ids and section label metadata */
@@ -761,7 +763,7 @@ function renderQuestion(pos){
 
   document.getElementById('qNoLabel').textContent = "Question "+(pos+1)+" of "+QUESTIONS.length;
   document.getElementById('qMarksLabel').textContent = "+"+q.m;
-  document.getElementById('qNegLabel').textContent = CONFIG.NEGATIVE_MARKING ? ("-"+(CONFIG.NEG_FRACTION[q.s]||0).toFixed(2)) : "0";
+  document.getElementById('qNegLabel').textContent = (q.type==="upload") ? "N/A (manual grading)" : (CONFIG.NEGATIVE_MARKING ? ("-"+(CONFIG.NEG_FRACTION[q.s]||0).toFixed(2)) : "0");
   document.getElementById('qText').textContent = (pos+1)+". "+q.q;
 
   const optWrap=document.getElementById('qOptions');
@@ -788,6 +790,56 @@ function renderQuestion(pos){
     note.className="text-answer-note";
     note.textContent="Enter the answer exactly as instructed in the question.";
     wrap.appendChild(label); wrap.appendChild(input); wrap.appendChild(note);
+    optWrap.appendChild(wrap);
+  } else if(q.type==="upload"){
+    const wrap=document.createElement('div');
+    wrap.className="text-answer-wrap";
+
+    const note=document.createElement('div');
+    note.className="text-answer-note";
+    note.style.marginBottom="10px";
+    note.textContent="This is a subjective question — your answer will be graded manually by your instructor. Upload a photo or scan of your written answer (JPG/PNG).";
+    wrap.appendChild(note);
+
+    const preview=document.createElement('img');
+    preview.style.cssText="max-width:100%;max-height:340px;border:1px solid #ccc;border-radius:6px;display:"+(state.answers[qid]?"block":"none")+";margin-bottom:10px;";
+    if(state.answers[qid]) preview.src=state.answers[qid];
+    wrap.appendChild(preview);
+
+    const status=document.createElement('div');
+    status.className="text-answer-note";
+    status.style.marginBottom="8px";
+    status.textContent = state.answers[qid] ? "✅ File uploaded. You may choose a different file to replace it." : "No file uploaded yet.";
+    wrap.appendChild(status);
+
+    const input=document.createElement('input');
+    input.type="file";
+    input.accept="image/*";
+    input.className="btn btn-clear";
+    input.style.cssText="display:inline-block;padding:8px;";
+    input.addEventListener('change',(e)=>{
+      const file=e.target.files[0];
+      if(!file) return;
+      const reader=new FileReader();
+      reader.onload=(ev)=>{
+        const img=new Image();
+        img.onload=()=>{
+          const maxW=1100;
+          const scale=Math.min(1, maxW/img.width);
+          const canvas=document.createElement('canvas');
+          canvas.width=Math.round(img.width*scale);
+          canvas.height=Math.round(img.height*scale);
+          canvas.getContext('2d').drawImage(img,0,0,canvas.width,canvas.height);
+          state.answers[qid]=canvas.toDataURL('image/jpeg',0.7);
+          renderQuestion(pos);
+          refreshPalette();
+          autosave();
+        };
+        img.src=ev.target.result;
+      };
+      reader.readAsDataURL(file);
+    });
+    wrap.appendChild(input);
     optWrap.appendChild(wrap);
   } else {
     const letters=['A','B','C','D'];
@@ -1005,13 +1057,19 @@ function openSubmitModal(){
 }
 
 function scoreTest(){
-  let obtained=0, correct=0, wrong=0, skipped=0;
+  let obtained=0, correct=0, wrong=0, skipped=0, pendingReview=0, pendingMax=0;
   const bySection={A:{max:0,obt:0,correct:0,attempted:0,total:0},B:{max:0,obt:0,correct:0,attempted:0,total:0},C:{max:0,obt:0,correct:0,attempted:0,total:0}};
   const details=[];
   QUESTIONS.forEach(q=>{
     bySection[q.s].max+=q.m; bySection[q.s].total+=1;
     const chosen=state.answers[q.id]; let status='skip',delta=0,chosenDisplay='Not Attempted',correctDisplay='';
-    if(q.type==='text'){
+    if(q.type==='upload'){
+      correctDisplay='(Subjective — graded manually by instructor)';
+      pendingMax+=q.m;
+      if(chosen===undefined || !chosen){ skipped++; status='skip'; chosenDisplay='Not Attempted'; }
+      else { bySection[q.s].attempted++; status='pending'; chosenDisplay='File uploaded'; pendingReview+=q.m; }
+      // No auto correct/wrong/negative marking for subjective uploads — delta stays 0.
+    }else if(q.type==='text'){
       correctDisplay=q.answer;
       if(chosen===undefined || String(chosen).trim()===''){ skipped++; }
       else { bySection[q.s].attempted++; chosenDisplay=String(chosen).trim().toUpperCase();
@@ -1030,7 +1088,7 @@ function scoreTest(){
     details.push({id:q.id,q:q.q,options:q.o||[],type:q.type||'mcq',correctIdx:q.a,chosenIdx:chosen,status,marks:q.m,delta,section:q.s,chosenDisplay,correctDisplay});
   });
   obtained=Math.max(0,Math.round(obtained*100)/100);
-  return {obtained,correct,wrong,skipped,bySection,details};
+  return {obtained,correct,wrong,skipped,pendingReview,pendingMax,bySection,details};
 }
 function doSubmit(autoTimeUp){
   if(state.submitted) return;
@@ -1070,6 +1128,14 @@ function renderResultScreen(result, autoTimeUp, timeTakenSec){
   document.getElementById('resCorrect').textContent = result.correct;
   document.getElementById('resWrong').textContent = result.wrong;
   document.getElementById('resSkipped').textContent = result.skipped;
+
+  const pendingEl=document.getElementById('pendingReviewNote');
+  if(result.pendingMax>0){
+    pendingEl.style.display='block';
+    pendingEl.innerHTML = "📝 <b>"+result.pendingMax+" marks</b> in this test are subjective questions graded manually by your instructor (you uploaded a file for "+result.pendingReview+" of those "+result.pendingMax+" marks). The score above reflects only the auto-graded objective questions and does not yet include these marks.";
+  } else {
+    pendingEl.style.display='none';
+  }
 
   const tbody=document.querySelector('#sectionSummaryTable tbody');
   tbody.innerHTML="";
@@ -1163,12 +1229,17 @@ function sendToBackend(result, timeTakenSec){
     name:state.candidate.name, roll:state.candidate.roll, email:state.candidate.email, cls:state.candidate.cls,
     totalMarks:TOTAL_MARKS, obtainedMarks:result.obtained, correctCount:result.correct, wrongCount:result.wrong,
     unattempted:result.skipped, percentage:((result.obtained/TOTAL_MARKS)*100).toFixed(2),
+    pendingReviewMarks: result.pendingMax, pendingReviewSubmitted: result.pendingReview,
     timeTakenSec:timeTakenSec, submittedAt:nowIST(),
     autoSubmitReason: state.autoSubmitReason || (timeTakenSec>=CONFIG.DURATION_MINUTES*60 ? "Time up" : ""),
     violationCount: state.violations.length,
     violations: state.violations,
     identityPhoto: state.identityPhoto || "",
-    answers: result.details.map(d=>({q:d.id+1, chosen:d.type==="text"?d.chosenDisplay:d.chosenIdx, correct:d.type==="text"?d.correctDisplay:d.correctIdx, status:d.status}))
+    answers: result.details.filter(d=>d.type!=="upload").map(d=>({q:d.id+1, chosen:d.type==="text"?d.chosenDisplay:d.chosenIdx, correct:d.type==="text"?d.correctDisplay:d.correctIdx, status:d.status})),
+    // Subjective questions requiring manual grading: each uploaded file is sent separately
+    // (Q number + marks + base64 JPEG) so the backend script can save it (e.g. to Google
+    // Drive) and link it in the response sheet rather than trying to cram it into a cell.
+    subjectiveUploads: result.details.filter(d=>d.type==="upload" && state.answers[d.id]).map(d=>({q:d.id+1, marks:d.marks, image:state.answers[d.id]}))
   };
   fetch(CONFIG.SCRIPT_URL,{
     method:"POST",
