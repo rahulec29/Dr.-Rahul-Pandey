@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Direct Reading Quiz — Online Test</title>
+<title>Mid Term Exam — Online Test</title>
 <style>
   /* ===================== CONFIG-DRIVEN LOOK: GATE / NTA CBT STYLE ===================== */
   :root{
@@ -211,7 +211,7 @@
 <div id="loginScreen" class="screen active">
   <div class="login-card">
     <div class="login-head">
-      <h1>Direct Reading Quiz — Online Assessment</h1>
+      <h1>Mid Term Exam — Online Assessment</h1>
       <p>Networking and Technology · Total Marks: <b id="totalMarksTag">20</b></p>
     </div>
     <div class="login-body">
@@ -240,9 +240,9 @@
       <h3>General Instructions</h3>
       <div class="instructions" id="instructionsBox">
         <ol>
-          <li>The test consists of <b>10 questions</b>, each carrying <b>2 marks</b>, for a total of <b>20 marks</b>.</li>
+          <li>The test consists of <b>7 questions</b> across three parts — <b>Part A: Objective</b> (4 × 5 marks = 20), <b>Part B: Short Answer</b> (2 × 10 marks = 20), and <b>Part C: Long Answer</b> (1 × 10 marks) — for a total of <b>50 marks</b>.</li>
           <li>Total duration: <b id="durTag">60 minutes</b>. The test will <b>auto-submit</b> when the timer reaches zero.</li>
-          <li>There is <b>25% negative marking</b> — you lose 0.5 marks for every wrong answer.</li>
+          <li>There is <b>25% negative marking</b> on wrong answers in Part A and Part B (you lose 1.25 marks per wrong answer in Part A, 2.5 in Part B). <b>Part C</b> has <b>no negative marking</b>.</li>
           <li>Each multiple-choice question has exactly <b>one correct option</b>. Questions requiring a typed answer must be entered exactly as instructed.</li>
           <li>Use <b>Save &amp; Next</b> to save your answer and move to the next question.</li>
           <li>Use <b>Mark for Review &amp; Next</b> if you want to revisit a question later — it will still count if you also answered it.</li>
@@ -306,8 +306,8 @@
 <div id="examScreen" class="screen">
   <div class="topbar">
     <div>
-      <div class="title">Direct Reading Quiz — Online Assessment</div>
-      <div class="sub">· Total Marks: 20</div>
+      <div class="title">Mid Term Exam — Online Assessment</div>
+      <div class="sub">· Total Marks: 50</div>
     </div>
     <div class="cand-timer">
       <div id="topCandName">—</div>
@@ -433,13 +433,14 @@
 const CONFIG = {
   // Paste your deployed Google Apps Script Web App URL here (see hosting guide).
   // Leave as-is to run the quiz WITHOUT centralized response collection.
-  SCRIPT_URL: "https://script.google.com/macros/s/AKfycbwYIV2gmkUCbZbEoYmtHItJlwOkvoeVBat0xGbWh6KJYThb56LK8n5cv__-cKyjwCSkSg/exec",
+  SCRIPT_URL: "https://script.google.com/macros/s/AKfycbyWxRaDvapVtW_Io3t2icKbmKkv5HVa4AIrOOh4imxmvh92ptojYZB1Bc7_W6lUpInj/exec",
 
   DURATION_MINUTES: 30,          // total test duration
   NEGATIVE_MARKING: true,        // set true to enable GATE-style negative marking
-  // Penalty per wrong answer, keyed by question mark value. All 10 questions in this
-  // quiz are worth 2 marks, so a value of 0.5 here = 25% negative marking throughout.
-  NEG_FRACTION: {1:0.25, 2:0.5, 3:0},
+  // Penalty per wrong answer, keyed by SECTION (not mark value, since Part B and Part C
+  // both carry 10 marks but only Part B/A's objective questions should be negatively marked).
+  // 25% negative marking on Part A & Part B; none on Part C (typed, long-answer).
+  NEG_FRACTION: {A:1.25, B:2.5, C:0},
   SHOW_ANSWER_REVIEW: true,      // show correct/incorrect review after submission (set false for strict exam mode)
   AUTOSAVE_KEY: "ehQuizAutosave_v1",
 
@@ -470,28 +471,24 @@ function nowIST(){
 }
 
 /* =====================================================================
-   QUESTION BANK — Direct Reading Quiz | 10 Questions | 20 Marks | Networking & Technology
-   Sourced entirely from the UPES "Networking and Technology" (CSBC2027) question paper.
-   All 10 questions carry 2 marks each.
+   QUESTION BANK — Networking and Technology Class Test | 7 Questions | 50 Marks
+   Part A = Objective (5 marks) | Part B = Short Answer (10 marks) | Part C = Long Answer (10 marks)
 ===================================================================== */
 const QUESTIONS = [
-{s:"A",m:2,type:"mcq",q:"The Internet is best described as:",o:["A single computer network owned by one company","A network of networks connecting devices worldwide","A type of software application","A local telephone exchange"],a:1},
-{s:"A",m:2,type:"mcq",q:"HTTP is called a “stateless” protocol because:",o:["It always encrypts data between client and server","Each request is treated independently, with no memory of previous requests","It cannot transmit images or files","It only works over a UDP connection"],a:1},
-{s:"A",m:2,type:"mcq",q:"Which of the following is NOT a common network topology?",o:["Star","Bus","Firewall","Mesh"],a:2},
-{s:"A",m:2,type:"mcq",q:"What is bandwidth? A file of size 1 MB is sent over a link of 8 Mbps. (Take 1 MB = 8 Mb.) The time taken to send the file is closest to:",o:["0.5 seconds","1 second","2 seconds","4 seconds"],a:1},
-{s:"A",m:2,type:"mcq",q:"Which pair below represents two common threats to a network?",o:["Malware and Phishing","Switch and Router","Bandwidth and Subnet","Firewall and Gateway"],a:0},
-{s:"A",m:2,type:"mcq",q:"Which cloud service model provides only the underlying infrastructure (servers, storage, networking), leaving the customer to manage the OS and applications?",o:["SaaS (Software as a Service)","PaaS (Platform as a Service)","IaaS (Infrastructure as a Service)","DaaS (Desktop as a Service)"],a:2},
-{s:"A",m:2,type:"mcq",q:"A network switch primarily forwards data within a local area network (LAN) based on the:",o:["IP address","MAC address","Port number","Domain name"],a:1},
-{s:"A",m:2,type:"mcq",q:"FTP (File Transfer Protocol) uses two separate connections between client and server for its operation. These are:",o:["Control connection and Data connection","Upload connection and Download connection","TCP connection and UDP connection","Primary connection and Backup connection"],a:0},
-{s:"A",m:2,type:"mcq",q:"Four routers are connected in a simple line: R1 — R2 — R3 — R4. Using Distance Vector Routing, once the routing information has converged, the hop count from R1 to R4 is:",o:["1","2","3","4"],a:2},
-{s:"A",m:2,type:"mcq",q:"Dividing a large network into smaller subnets mainly helps to:",o:["Automatically increase the link's bandwidth","Improve manageability and reduce broadcast traffic","Eliminate the need for IP addresses","Convert TCP traffic into UDP traffic"],a:1}
+{s:"A",m:5,type:"mcq",q:"The main function of the Internet is to:",o:["Store data only","Connect networks and devices globally for communication","Run local software","Print documents"],a:1},
+{s:"A",m:5,type:"mcq",q:"HTTP stands for:",o:["HyperText Transfer Protocol","High Transfer Text Protocol","Host Transfer Protocol","Hyperlink Text Protocol"],a:0},
+{s:"A",m:5,type:"mcq",q:"Which topology connects all devices to a single central hub?",o:["Bus","Ring","Star","Mesh"],a:2},
+{s:"A",m:5,type:"mcq",q:"Which protocol guarantees reliable, ordered delivery of data?",o:["UDP","IP","TCP","ARP"],a:2},
+{s:"B",m:10,type:"mcq",q:"What is bandwidth? A file of size 4 MB is sent over a link of 8 Mbps. (Take 1 MB = 8 Mb.) The time taken to send the file is:",o:["1 second","2 seconds","4 seconds","8 seconds"],a:2},
+{s:"B",m:10,type:"mcq",q:"Which pair below represents two common threats to a network?",o:["Malware and Phishing","Switch and Router","Bandwidth and Subnet","Firewall and Gateway"],a:0},
+{s:"C",m:10,type:"text",q:"What is a cipher? The Caesar cipher encrypts a message by shifting each letter a fixed number of positions in the alphabet. Using a shift key of 3, encrypt the message “NETWORK”.\n\nWRITE THE CIPHERTEXT IN CAPITAL LETTERS WITHOUT SPACE BETWEEN LETTERS.",answer:"QHWZRUN"}
 ];
 
 /* Assign global ids and section label metadata */
 const SECTION_META = {
-  A:{name:"Section A — Networking & Technology", color:"#3fa34d"},
-  B:{name:"Section B — Intermediate", color:"#1a73c7"},
-  C:{name:"Section C — Advanced", color:"#8e44ad"}
+  A:{name:"Part A — Objective", color:"#3fa34d"},
+  B:{name:"Part B — Short Answer", color:"#1a73c7"},
+  C:{name:"Part C — Long Answer", color:"#8e44ad"}
 };
 QUESTIONS.forEach((q,i)=>{ q.id=i; });
 const TOTAL_MARKS = QUESTIONS.reduce((sum,q)=>sum+q.m,0);
@@ -536,7 +533,7 @@ const QBYID={}; QUESTIONS.forEach(q=>{ QBYID[q.id]=q; });
 // replace this whole block with:
 //   let DISPLAY_ORDER = shuffleArray(QUESTIONS.map(q=>q.id));
 let DISPLAY_ORDER = [];
-["A"].forEach(sec=>{
+["A","B","C"].forEach(sec=>{
   const idsInSec = QUESTIONS.filter(q=>q.s===sec).map(q=>q.id);
   DISPLAY_ORDER.push(...shuffleArray(idsInSec));
 });
@@ -687,7 +684,7 @@ function enterFullscreenBestEffort(){
 function buildSectionBar(){
   const bar=document.getElementById('sectionBar');
   bar.innerHTML="";
-  ["A"].forEach(s=>{
+  ["A","B","C"].forEach(s=>{
     const span=document.createElement('span');
     span.className="stag";
     span.id="stag-"+s;
@@ -696,7 +693,7 @@ function buildSectionBar(){
   });
 }
 function updateSectionBarHighlight(sec){
-  ["A"].forEach(s=>{
+  ["A","B","C"].forEach(s=>{
     document.getElementById('stag-'+s).classList.toggle('on', s===sec);
   });
 }
@@ -707,7 +704,7 @@ function updateSectionBarHighlight(sec){
 function buildPalette(){
   const container=document.getElementById('paletteScroll');
   container.innerHTML="";
-  ["A"].forEach(sec=>{
+  ["A","B","C"].forEach(sec=>{
     const idsInSec = DISPLAY_ORDER.filter(id=>QBYID[id].s===sec);
     if(idsInSec.length===0) return;
     const title=document.createElement('div');
@@ -764,7 +761,7 @@ function renderQuestion(pos){
 
   document.getElementById('qNoLabel').textContent = "Question "+(pos+1)+" of "+QUESTIONS.length;
   document.getElementById('qMarksLabel').textContent = "+"+q.m;
-  document.getElementById('qNegLabel').textContent = CONFIG.NEGATIVE_MARKING ? ("-"+(CONFIG.NEG_FRACTION[q.m]||0).toFixed(2)) : "0";
+  document.getElementById('qNegLabel').textContent = CONFIG.NEGATIVE_MARKING ? ("-"+(CONFIG.NEG_FRACTION[q.s]||0).toFixed(2)) : "0";
   document.getElementById('qText').textContent = (pos+1)+". "+q.q;
 
   const optWrap=document.getElementById('qOptions');
@@ -1019,14 +1016,14 @@ function scoreTest(){
       if(chosen===undefined || String(chosen).trim()===''){ skipped++; }
       else { bySection[q.s].attempted++; chosenDisplay=String(chosen).trim().toUpperCase();
         if(chosenDisplay===q.answer){correct++;delta=q.m;status='correct';bySection[q.s].correct++;}
-        else {wrong++;status='wrong';if(CONFIG.NEGATIVE_MARKING)delta=-(CONFIG.NEG_FRACTION[q.m]||0);}
+        else {wrong++;status='wrong';if(CONFIG.NEGATIVE_MARKING)delta=-(CONFIG.NEG_FRACTION[q.s]||0);}
       }
     }else{
       const letters=['A','B','C','D']; correctDisplay=letters[q.a]+') '+q.o[q.a];
       if(chosen===undefined){skipped++;}
       else {bySection[q.s].attempted++;chosenDisplay=letters[chosen]+') '+q.o[chosen];
         if(chosen===q.a){correct++;delta=q.m;status='correct';bySection[q.s].correct++;}
-        else {wrong++;status='wrong';if(CONFIG.NEGATIVE_MARKING)delta=-(CONFIG.NEG_FRACTION[q.m]||0);}
+        else {wrong++;status='wrong';if(CONFIG.NEGATIVE_MARKING)delta=-(CONFIG.NEG_FRACTION[q.s]||0);}
       }
     }
     obtained+=delta; bySection[q.s].obt+=delta;
@@ -1076,7 +1073,7 @@ function renderResultScreen(result, autoTimeUp, timeTakenSec){
 
   const tbody=document.querySelector('#sectionSummaryTable tbody');
   tbody.innerHTML="";
-  ["A"].forEach(s=>{
+  ["A","B","C"].forEach(s=>{
     const b=result.bySection[s];
     const tr=document.createElement('tr');
     tr.innerHTML = `<td style="text-align:left;font-weight:bold;">${SECTION_META[s].name}</td><td>${b.total}</td><td>${b.attempted}</td><td>${b.correct}</td><td>${Math.round(b.obt*100)/100}</td><td>${b.max}</td>`;
